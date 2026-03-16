@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "wouter";
-import { ArrowRight, Search, Key, Building, CheckCircle2, Star } from "lucide-react";
+import { ArrowRight, Search, Key, Building, CheckCircle2, Star, ClipboardList, ShieldCheck, Handshake, BookOpen, CalendarCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
@@ -74,32 +74,81 @@ export default function Home() {
       {/* HOW IT WORKS */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-4xl font-display font-bold text-primary mb-4">How Fairview Works</h2>
-            <p className="text-muted-foreground text-lg">A simple, transparent process designed to get you the keys faster.</p>
+            <p className="text-muted-foreground text-lg">A simple, transparent process — whether you're listing or looking.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: Search, title: "1. Search & Discover", desc: "Browse our curated list of verified lands, homes, and commercial spaces across Nigeria." },
-              { icon: Building, title: "2. Inspect with Ease", desc: "Request a virtual tour immediately or schedule a physical inspection via WhatsApp." },
-              { icon: CheckCircle2, title: "3. Close the Deal", desc: "Negotiate directly and finalize your paperwork securely with our trusted agents." }
-            ].map((step, i) => (
-              <motion.div 
-                key={i}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                className="bg-gray-50 rounded-3xl p-8 border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1 group"
-              >
-                <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:bg-accent group-hover:text-white transition-colors">
-                  <step.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">{step.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
-              </motion.div>
-            ))}
+          {/* Buyers/Renters subsection */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="flex-1 h-px bg-gray-200"></div>
+              <div className="text-center">
+                <span className="inline-block bg-accent/10 text-accent text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-2">For Buyers & Renters</span>
+                <h3 className="text-3xl font-display font-bold text-primary">Browse · Book · Buy</h3>
+              </div>
+              <div className="flex-1 h-px bg-gray-200"></div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                { icon: Search, step: "01", title: "Browse", desc: "Explore our curated listings of verified lands, homes, apartments, and commercial spaces across Nigeria — all with real photos and prices." },
+                { icon: CalendarCheck, step: "02", title: "Book an Inspection", desc: "Request a virtual tour instantly or schedule a physical inspection via WhatsApp. We'll confirm within hours." },
+                { icon: Handshake, step: "03", title: "Buy or Rent", desc: "Negotiate with confidence and close your deal securely with our trusted agents handling all the paperwork." }
+              ].map((step, i) => (
+                <motion.div
+                  key={i}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true }}
+                  variants={fadeIn}
+                  className="relative bg-gray-50 rounded-3xl p-8 border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1 group"
+                >
+                  <span className="absolute top-6 right-6 text-6xl font-display font-black text-gray-100 group-hover:text-accent/20 transition-colors select-none">{step.step}</span>
+                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:bg-accent transition-colors">
+                    <step.icon className="w-6 h-6 text-accent group-hover:text-white transition-colors" />
+                  </div>
+                  <h4 className="text-xl font-bold text-foreground mb-3">{step.title}</h4>
+                  <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Property Owners subsection */}
+          <div>
+            <div className="flex items-center gap-4 mb-10">
+              <div className="flex-1 h-px bg-gray-200"></div>
+              <div className="text-center">
+                <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-2">For Property Owners</span>
+                <h3 className="text-3xl font-display font-bold text-primary">List · Verify · Sell</h3>
+              </div>
+              <div className="flex-1 h-px bg-gray-200"></div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                { icon: ClipboardList, step: "01", title: "List Your Property", desc: "Fill out a short form with your property details — title, location, description, and photos. Our team will take it from there." },
+                { icon: ShieldCheck, step: "02", title: "We Verify & Market", desc: "Our agents physically verify the property and publish it on Fairview with professional presentation to attract serious buyers and tenants." },
+                { icon: Building, step: "03", title: "Sell or Lease", desc: "We connect you with verified prospects, coordinate inspections, and support you all the way to a successful transaction." }
+              ].map((step, i) => (
+                <motion.div
+                  key={i}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true }}
+                  variants={fadeIn}
+                  className="relative bg-primary/5 rounded-3xl p-8 border border-primary/10 hover:shadow-xl transition-all hover:-translate-y-1 group"
+                >
+                  <span className="absolute top-6 right-6 text-6xl font-display font-black text-primary/10 group-hover:text-primary/20 transition-colors select-none">{step.step}</span>
+                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                    <step.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
+                  </div>
+                  <h4 className="text-xl font-bold text-foreground mb-3">{step.title}</h4>
+                  <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
