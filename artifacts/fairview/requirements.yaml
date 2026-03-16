@@ -1,0 +1,29 @@
+packages:
+  "framer-motion": "For page transitions and scroll-triggered animations"
+  "react-hook-form": "For robust form state management"
+  "@hookform/resolvers": "For form validation with Zod"
+  "embla-carousel-react": "For the testimonials carousel"
+  "embla-carousel-autoplay": "For auto-playing the testimonials carousel"
+  "date-fns": "For formatting comment dates"
+
+images:
+  - path: "artifacts/fairview/public/images/hero-city.png"
+    description: "A stunning, golden-hour wide shot of a modern Nigerian cityscape, showing beautiful high-rise real estate, warm lighting, highly professional and luxurious"
+    aspect_ratio: "16:9"
+  - path: "artifacts/fairview/public/images/cac-cert.png"
+    description: "A framed, official corporate registration certificate resting on a neat wooden desk with soft natural lighting, symbol of trust"
+    aspect_ratio: "4:3"
+  - path: "artifacts/fairview/public/images/logo.png"
+    description: "A minimal, elegant real estate logo for 'Fairview', incorporating a subtle house shape in deep navy blue and gold colors on a transparent background"
+    aspect_ratio: "1:1"
+  - path: "artifacts/fairview/public/images/add-property.png"
+    description: "A clean, modern illustration of a person handing over house keys or listing a house online, warm tones"
+    aspect_ratio: "16:9"
+  - path: "artifacts/fairview/public/images/find-property.png"
+    description: "A clean, modern illustration of a family happily looking at a blueprint or a house model, warm welcoming tones"
+    aspect_ratio: "16:9"
+
+notes:
+  - Using generated API hooks from @workspace/api-client-react for auth and comments.
+  - Mocking property data locally as no property API was specified in the spec.
+  - Zod schemas are imported from the generated api schemas.

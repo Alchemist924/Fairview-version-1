@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Fairview Realty"
+version = "1.0.0"
+id = "artifacts/fairview"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 20161
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/fairview run dev"
+
+[services.env]
+PORT = "20161"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/fairview", "run", "build"]
+publicDir = "artifacts/fairview/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
