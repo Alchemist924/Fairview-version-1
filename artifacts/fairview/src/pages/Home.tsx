@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
-const TESTIMONIALS = [
-  { name: "Oluwaseun Adebayo", role: "Home Buyer", text: "Fairview made finding my dream home in Lekki incredibly easy. Their transparent process gave me absolute peace of mind." },
-  { name: "Chika Nwosu", role: "Property Investor", text: "As an investor, I need reliable data and quick inspections. Fairview's team is top-notch, responsive, and deeply knowledgeable." },
-  { name: "Emeka Ofor", role: "Landlord", text: "Listing my properties on Fairview increased my occupancy rate to 100% within a month. Highly recommended for property owners." },
-  { name: "Aisha Mohammed", role: "Tenant", text: "Found a beautiful apartment in Abuja through their platform. The virtual inspection saved me so much time!" },
+const TESTIMONIAL_IMAGES = [
+  { src: "images/review-1.png", alt: "Samuel A. Google Review" },
+  { src: "images/review-2.png", alt: "Tosin M. Google Review" },
+  { src: "images/review-3.png", alt: "Ikechukwu O. Google Review" },
+  { src: "images/review-4.png", alt: "Bola O. Google Review" },
 ];
 
 const fadeIn = {
@@ -188,24 +188,14 @@ export default function Home() {
           </div>
 
           <div className="embla" ref={emblaRef}>
-            <div className="embla__container flex">
-              {TESTIMONIALS.map((t, i) => (
+            <div className="embla__container flex items-center">
+              {TESTIMONIAL_IMAGES.map((t, i) => (
                 <div className="embla__slide flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-6" key={i}>
-                  <div className="bg-white/5 border border-white/10 p-8 rounded-3xl h-full backdrop-blur-md">
-                    <div className="flex gap-1 mb-6">
-                      {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-accent text-accent" />)}
-                    </div>
-                    <p className="text-lg leading-relaxed mb-8 italic">"{t.text}"</p>
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-orange-400 flex items-center justify-center font-bold text-lg shadow-inner">
-                        {t.name.charAt(0)}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-white">{t.name}</h4>
-                        <p className="text-sm text-primary-foreground/60">{t.role}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <img
+                    src={`${import.meta.env.BASE_URL}${t.src}`}
+                    alt={t.alt}
+                    className="w-full rounded-2xl shadow-xl object-contain"
+                  />
                 </div>
               ))}
             </div>
