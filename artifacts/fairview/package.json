@@ -75,6 +75,7 @@
     "zod": "catalog:"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.99.2",
     "embla-carousel-autoplay": "^8.6.0"
   }
 }

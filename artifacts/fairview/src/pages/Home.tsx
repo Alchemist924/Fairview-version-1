@@ -43,17 +43,14 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="max-w-2xl"
           >
-            <span className="inline-block py-1 px-3 rounded-full bg-accent/20 text-accent font-semibold text-sm mb-6 backdrop-blur-sm border border-accent/30">
-              Nigeria's Premium Real Estate Platform
-            </span>
-            <h1 className="text-5xl md:text-7xl font-display font-bold leading-tight mb-6">
-              Find your perfect space, <span className="text-accent">hassle-free.</span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-200 mb-10 leading-relaxed max-w-xl">
-              Whether you're looking to buy, rent, or list your property, Fairview connects you with genuine opportunities across Nigeria.
+            <p className="text-xl md:text-2xl font-semibold text-white mb-2 leading-snug">
+              Own a property in Ile Ife? We put it in front of ready clients.
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
+            <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl">
+              In need of a property or space? View trusted listings or get matching ones sent straight to your phone.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-10">
               <Link href="/buyers-renters">
                 <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 bg-accent hover:bg-accent/90 text-white border-none shadow-xl shadow-accent/20 rounded-xl">
                   <Search className="mr-2 w-5 h-5" />
@@ -66,6 +63,13 @@ export default function Home() {
                   Property Owner
                 </Button>
               </Link>
+            </div>
+
+            <div className="border-t border-white/20 pt-6 max-w-xl">
+              <p className="text-base text-gray-300 leading-relaxed">
+                Looking to lease, sell, buy or rent property in Ife?<br />
+                We know you're busy — so we bring verified properties in Ife to one screen. Simple process, no exorbitant fees, transparent dealings.
+              </p>
             </div>
           </motion.div>
         </div>

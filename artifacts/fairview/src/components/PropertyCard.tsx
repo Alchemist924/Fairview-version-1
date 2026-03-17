@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { MapPin, Maximize, Send } from "lucide-react";
 import { Property } from "@/lib/mock-data";
-import { useGetComments, useAddComment } from "@workspace/api-client-react";
+import { supabase, type Comment } from "@/lib/supabase";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,29 +13,25 @@ import { toast } from "@/hooks/use-toast";
 export function PropertyCard({ property }: { property: Property }) {
   const [activeImage, setActiveImage] = useState(property.mainImage);
   const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [, setLocation] = useLocation();
   const { user } = useAuth();
-  
-  // Queries
-  const { data: comments, refetch } = useGetComments(property.id);
-  const addCommentMutation = useAddComment({
-    mutation: {
-      onSuccess: () => {
-        setCommentText("");
-        refetch();
-        toast({ title: "Comment added successfully" });
-      },
-      onError: (error) => {
-        toast({ 
-          title: "Failed to add comment", 
-          description: error.error?.error || "Please try again later.",
-          variant: "destructive" 
-        });
-      }
-    }
-  });
 
-  const handleCommentSubmit = (e: React.FormEvent) => {
+  const fetchComments = useCallback(async () => {
+    const { data } = await supabase
+      .from("comments")
+      .select("*")
+      .eq("property_id", property.id)
+      .order("created_at", { ascending: true });
+    if (data) setComments(data as Comment[]);
+  }, [property.id]);
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
+
+  const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
       toast({ title: "Please login to comment", variant: "destructive" });
@@ -43,11 +39,23 @@ export function PropertyCard({ property }: { property: Property }) {
       return;
     }
     if (!commentText.trim()) return;
-    
-    addCommentMutation.mutate({
-      propertyId: property.id,
-      data: { text: commentText }
+
+    setIsSubmitting(true);
+    const { error } = await supabase.from("comments").insert({
+      property_id: property.id,
+      user_id: user.id,
+      username: user.username,
+      text: commentText.trim(),
     });
+    setIsSubmitting(false);
+
+    if (error) {
+      toast({ title: "Failed to add comment", description: error.message, variant: "destructive" });
+    } else {
+      setCommentText("");
+      toast({ title: "Comment added!" });
+      fetchComments();
+    }
   };
 
   return (
@@ -55,21 +63,20 @@ export function PropertyCard({ property }: { property: Property }) {
       {/* Media Gallery */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 bg-gray-100">
         <div className="relative aspect-video lg:aspect-auto lg:h-[400px]">
-          <img 
-            src={activeImage} 
-            alt={property.title} 
+          <img
+            src={activeImage}
+            alt={property.title}
             className="w-full h-full object-cover"
           />
           <div className="absolute top-4 left-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-bold shadow-md">
             {property.price}
           </div>
         </div>
-        
+
         <div className="grid grid-cols-2 grid-rows-2 gap-1 h-[200px] lg:h-[400px]">
-          {/* Video Placeholder top left */}
           <div className="relative bg-black cursor-pointer group">
-            <iframe 
-              src={property.videoUrl} 
+            <iframe
+              src={property.videoUrl}
               title="Property Video"
               className="w-full h-full opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -81,11 +88,10 @@ export function PropertyCard({ property }: { property: Property }) {
             </div>
             <div className="absolute bottom-2 left-2 text-xs text-white font-medium bg-black/50 px-2 py-1 rounded">Video Tour</div>
           </div>
-          
-          {/* Remaining Images */}
+
           {property.gallery.slice(0, 3).map((img, i) => (
-            <button 
-              key={i} 
+            <button
+              key={i}
               onClick={() => setActiveImage(img)}
               className="relative overflow-hidden group focus:outline-none"
             >
@@ -109,15 +115,15 @@ export function PropertyCard({ property }: { property: Property }) {
             </div>
           </div>
           <div className="flex gap-2">
-            <WhatsAppButton 
-              label="Virtual Inspection" 
+            <WhatsAppButton
+              label="Virtual Inspection"
               variant="outline"
-              message={`Hello Fairview, I would like to book a Virtual Inspection for ${property.title} located at ${property.location}`} 
+              message={`Hello Fairview, I would like to book a Virtual Inspection for ${property.title} located at ${property.location}`}
             />
-            <WhatsAppButton 
-              label="Physical Inspection" 
+            <WhatsAppButton
+              label="Physical Inspection"
               variant="accent"
-              message={`Hello Fairview, I would like to book a Physical Inspection for ${property.title} located at ${property.location}`} 
+              message={`Hello Fairview, I would like to book a Physical Inspection for ${property.title} located at ${property.location}`}
             />
           </div>
         </div>
@@ -135,9 +141,9 @@ export function PropertyCard({ property }: { property: Property }) {
 
         <div className="border-t pt-8">
           <h4 className="font-display font-bold text-lg mb-6">Questions & Comments</h4>
-          
+
           <div className="space-y-6 mb-6">
-            {comments && comments.length > 0 ? (
+            {comments.length > 0 ? (
               comments.map(c => (
                 <div key={c.id} className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -146,7 +152,7 @@ export function PropertyCard({ property }: { property: Property }) {
                   <div>
                     <div className="flex items-baseline gap-2">
                       <span className="font-semibold text-sm">{c.username}</span>
-                      <span className="text-xs text-muted-foreground">{format(new Date(c.createdAt), 'MMM d, yyyy')}</span>
+                      <span className="text-xs text-muted-foreground">{format(new Date(c.created_at), 'MMM d, yyyy')}</span>
                     </div>
                     <p className="text-sm text-gray-700 mt-1">{c.text}</p>
                   </div>
@@ -158,7 +164,7 @@ export function PropertyCard({ property }: { property: Property }) {
           </div>
 
           <form onSubmit={handleCommentSubmit} className="flex gap-3">
-            <Input 
+            <Input
               placeholder={user ? "Ask a question..." : "Login to join the conversation..."}
               value={commentText}
               onChange={e => setCommentText(e.target.value)}
@@ -167,12 +173,12 @@ export function PropertyCard({ property }: { property: Property }) {
                 if (!user) setLocation("/login");
               }}
             />
-            <Button 
-              type="submit" 
-              disabled={!user || addCommentMutation.isPending || !commentText.trim()}
+            <Button
+              type="submit"
+              disabled={!user || isSubmitting || !commentText.trim()}
               className="bg-primary hover:bg-primary/90"
             >
-              {addCommentMutation.isPending ? "..." : <Send className="w-4 h-4" />}
+              {isSubmitting ? "..." : <Send className="w-4 h-4" />}
             </Button>
           </form>
         </div>
