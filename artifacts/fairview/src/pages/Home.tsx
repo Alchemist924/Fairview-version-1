@@ -134,6 +134,14 @@ export default function Home() {
               <div className="flex-1 h-px bg-gray-200"></div>
             </div>
 
+            <div className="mb-10 rounded-2xl overflow-hidden shadow-md">
+              <img
+                src={`${import.meta.env.BASE_URL}images/list-verify-sell.png`}
+                alt="List, Verify and Sell with Fairview"
+                className="w-full object-cover"
+              />
+            </div>
+
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 { icon: ClipboardList, step: "01", title: "List Your Property", desc: "Fill out a short form with your property details — title, location, description, and photos. Our team will take it from there." },
