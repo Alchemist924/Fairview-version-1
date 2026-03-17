@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "wouter";
-import { ArrowRight, Search, Key, Building, CheckCircle2, Star, ClipboardList, ShieldCheck, Handshake, BookOpen, CalendarCheck } from "lucide-react";
+import { ArrowRight, Search, Key, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
@@ -98,29 +98,20 @@ export default function Home() {
               />
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { icon: Search, step: "01", title: "Browse", desc: "Explore our curated listings of verified lands, homes, apartments, and commercial spaces across Nigeria — all with real photos and prices." },
-                { icon: CalendarCheck, step: "02", title: "Book an Inspection", desc: "Request a virtual tour instantly or schedule a physical inspection via WhatsApp. We'll confirm within hours." },
-                { icon: Handshake, step: "03", title: "Buy or Rent", desc: "Negotiate with confidence and close your deal securely with our trusted agents handling all the paperwork." }
-              ].map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial="initial"
-                  whileInView="animate"
-                  viewport={{ once: true }}
-                  variants={fadeIn}
-                  className="relative bg-gray-50 rounded-3xl p-8 border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1 group"
-                >
-                  <span className="absolute top-6 right-6 text-6xl font-display font-black text-gray-100 group-hover:text-accent/20 transition-colors select-none">{step.step}</span>
-                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:bg-accent transition-colors">
-                    <step.icon className="w-6 h-6 text-accent group-hover:text-white transition-colors" />
-                  </div>
-                  <h4 className="text-xl font-bold text-foreground mb-3">{step.title}</h4>
-                  <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+            <ol className="space-y-4 max-w-2xl mx-auto text-lg text-foreground">
+              <li className="flex gap-3">
+                <span className="font-bold text-accent shrink-0">1)</span>
+                <span><span className="font-bold">Browse:</span> Explore available properties online.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-accent shrink-0">2)</span>
+                <span><span className="font-bold">Book:</span> Book a physical or virtual inspection on your phone.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-accent shrink-0">3)</span>
+                <span><span className="font-bold">Buy:</span> Rent or Buy after confirmation.</span>
+              </li>
+            </ol>
           </div>
 
           {/* Property Owners subsection */}
@@ -142,29 +133,20 @@ export default function Home() {
               />
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { icon: ClipboardList, step: "01", title: "List Your Property", desc: "Fill out a short form with your property details — title, location, description, and photos. Our team will take it from there." },
-                { icon: ShieldCheck, step: "02", title: "We Verify & Market", desc: "Our agents physically verify the property and publish it on Fairview with professional presentation to attract serious buyers and tenants." },
-                { icon: Building, step: "03", title: "Sell or Lease", desc: "We connect you with verified prospects, coordinate inspections, and support you all the way to a successful transaction." }
-              ].map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial="initial"
-                  whileInView="animate"
-                  viewport={{ once: true }}
-                  variants={fadeIn}
-                  className="relative bg-primary/5 rounded-3xl p-8 border border-primary/10 hover:shadow-xl transition-all hover:-translate-y-1 group"
-                >
-                  <span className="absolute top-6 right-6 text-6xl font-display font-black text-primary/10 group-hover:text-primary/20 transition-colors select-none">{step.step}</span>
-                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-                    <step.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
-                  </div>
-                  <h4 className="text-xl font-bold text-foreground mb-3">{step.title}</h4>
-                  <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+            <ol className="space-y-4 max-w-2xl mx-auto text-lg text-foreground">
+              <li className="flex gap-3">
+                <span className="font-bold text-primary shrink-0">1)</span>
+                <span>Add your property details and book a convenient inspection time.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-primary shrink-0">2)</span>
+                <span>We visit and capture your property professionally.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-primary shrink-0">3)</span>
+                <span>Once ownership is confirmed, we begin marketing to serious buyers or renters.</span>
+              </li>
+            </ol>
           </div>
         </div>
       </section>
