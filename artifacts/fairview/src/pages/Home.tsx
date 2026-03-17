@@ -90,6 +90,14 @@ export default function Home() {
               <div className="flex-1 h-px bg-gray-200"></div>
             </div>
 
+            <div className="mb-10 rounded-2xl overflow-hidden shadow-md">
+              <img
+                src={`${import.meta.env.BASE_URL}images/browse-book-buy.png`}
+                alt="Browse, Book and Buy with Fairview"
+                className="w-full object-cover"
+              />
+            </div>
+
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 { icon: Search, step: "01", title: "Browse", desc: "Explore our curated listings of verified lands, homes, apartments, and commercial spaces across Nigeria — all with real photos and prices." },
