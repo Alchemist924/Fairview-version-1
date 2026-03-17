@@ -79,7 +79,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-primary-foreground/20 text-center text-primary-foreground/60 text-sm">
-          <p>© {new Date().getFullYear()} Fairview Realty. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Fairview. All rights reserved.</p>
         </div>
       </div>
     </footer>

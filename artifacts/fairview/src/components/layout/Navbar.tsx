@@ -46,7 +46,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-3 group">
             <img 
               src={`${import.meta.env.BASE_URL}images/logo.png`} 
-              alt="Fairview Realty" 
+              alt="Fairview" 
               className="h-10 w-10 object-contain group-hover:scale-105 transition-transform" 
             />
             <span className="font-display font-bold text-2xl text-primary tracking-tight">Fairview</span>
