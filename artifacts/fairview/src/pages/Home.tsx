@@ -44,7 +44,7 @@ export default function Home() {
             className="max-w-2xl"
           >
             <p className="text-xl md:text-2xl font-semibold text-white mb-2 leading-snug">
-              Own a property in Ile Ife? We put it in front of ready clients.
+              Own a property in Ile Ife? Let's put it in front of ready clients.
             </p>
             <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl">
               In need of a property or space? View trusted listings or get matching ones sent straight to your phone.
@@ -67,7 +67,6 @@ export default function Home() {
 
             <div className="border-t border-white/20 pt-6 max-w-xl">
               <p className="text-base text-gray-300 leading-relaxed">
-                Looking to lease, sell, buy or rent property in Ife?<br />
                 We know you're busy — so we bring verified properties in Ife to one screen. Simple process, no exorbitant fees, transparent dealings.
               </p>
             </div>
