@@ -6,6 +6,7 @@ import propertiesForSaleImg from "@assets/1771996029297_1774099972125.png";
 import apartmentsForRentImg from "@assets/1771996059819_1774100076470.png";
 import landsForSaleImg from "@assets/1771995931088_1774100153533.png";
 import shopsForLeaseImg from "@assets/1771995958275_1774100214625.png";
+import findPropertyImg from "@assets/1772203748821_1774102079075.png";
 
 export default function BuyersRenters() {
   const categories = [
@@ -27,10 +28,15 @@ export default function BuyersRenters() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 mb-24">
-        <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100 flex flex-col md:flex-row gap-12 items-center">
-          <div className="flex-1">
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+          <img
+            src={findPropertyImg}
+            alt="Finding property with Fairview"
+            className="w-full object-cover"
+          />
+          <div className="p-8 md:p-12">
             <h2 className="text-3xl font-display font-bold text-primary mb-8">How to Find Property</h2>
-            <div className="space-y-8">
+            <div className="space-y-8 max-w-2xl">
               {[
                 { step: "01", title: "Select a Category", desc: "Choose from our verified listings of lands, houses, apartments, or shops below." },
                 { step: "02", title: "Review & Ask", desc: "View detailed photos, watch the virtual tour video, and read/ask questions in the comments section." },
@@ -45,13 +51,6 @@ export default function BuyersRenters() {
                 </div>
               ))}
             </div>
-          </div>
-          <div className="flex-1">
-            <img 
-              src={`${import.meta.env.BASE_URL}images/find-property.png`} 
-              alt="Finding property" 
-              className="w-full rounded-2xl shadow-md"
-            />
           </div>
         </div>
       </section>
