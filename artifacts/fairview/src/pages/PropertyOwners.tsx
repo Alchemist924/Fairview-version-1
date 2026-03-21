@@ -39,9 +39,10 @@ Description: ${formData.description}`;
       {/* Intro */}
       <section className="bg-primary text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">Partner with Fairview</h1>
+          <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">Put your property in front of the right people</h1>
           <p className="text-lg md:text-xl text-primary-foreground/80 leading-relaxed">
-            Maximize your property's potential. We connect landlords and sellers with high-quality, verified clients while handling the marketing and legalities.
+            Find serious buyers or the right tenants — smooth and straightforward.<br className="hidden md:block" />
+            With Fairview, getting your property seen and secured is simple, fast and handled for you.
           </p>
         </div>
       </section>
@@ -62,19 +63,21 @@ Description: ${formData.description}`;
           </motion.div>
           
           <div>
-            <h2 className="text-3xl font-display font-bold mb-8 text-primary">How to List Your Property</h2>
+            <h2 className="text-3xl font-display font-bold mb-8 text-primary">How it works</h2>
             <div className="space-y-6 mb-10">
               {[
-                "Submit your property details via our quick form.",
-                "Our team will contact you to verify details and arrange an inspection.",
-                "We professionally photograph and list your property on our network.",
-                "We bring you verified buyers/renters and close the deal."
+                { title: "Add your property", desc: "Click \"Add your Property\" below to enter basic details and choose a convenient inspection time." },
+                { title: "We capture your property", desc: "Our team visits to inspect, record and prepare your property for listing." },
+                { title: "Verify & get listed", desc: "Send a photo of your ownership documents to verify your property, and we begin marketing to secure serious buyers or the right tenants." },
               ].map((step, i) => (
                 <div key={i} className="flex gap-4 items-start bg-white p-4 rounded-xl shadow-sm border border-gray-50">
-                  <div className="bg-accent/10 p-2 rounded-full mt-1">
-                    <CheckCircle className="w-5 h-5 text-accent" />
+                  <div className="bg-accent/10 px-3 py-2 rounded-full mt-1 shrink-0">
+                    <span className="font-display font-bold text-accent text-sm">{i + 1}</span>
                   </div>
-                  <p className="text-lg font-medium text-gray-700">{step}</p>
+                  <div>
+                    <p className="text-lg font-bold text-gray-800">{step.title}</p>
+                    <p className="text-gray-600 mt-1">{step.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -135,10 +138,22 @@ Description: ${formData.description}`;
       </section>
 
       {/* Closing */}
-      <section className="bg-gray-50 py-20 text-center">
-        <div className="max-w-3xl mx-auto px-4">
-          <h3 className="text-2xl font-bold text-primary mb-4">Don't let your property sit empty.</h3>
-          <p className="text-gray-600 mb-8">Join hundreds of smart landlords who trust Fairview to manage their listings with excellence and discretion.</p>
+      <section className="bg-gray-50 py-20">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h3 className="text-3xl font-display font-bold text-primary mb-4">Why Property Owners choose Fairview</h3>
+          <p className="text-gray-600 mb-8 text-lg">We handle the work so you can:</p>
+          <div className="space-y-4 text-left max-w-xl mx-auto">
+            {[
+              "Get your property marketed across multiple platforms — no added fees.",
+              "Request updates or changes anytime.",
+              "Enjoy reliable service, faster results and wider reach.",
+            ].map((point, i) => (
+              <div key={i} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <span className="text-accent font-bold text-lg shrink-0">→</span>
+                <p className="text-gray-700 font-medium">{point}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </Layout>
