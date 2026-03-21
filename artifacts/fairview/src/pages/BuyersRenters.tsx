@@ -3,11 +3,12 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Building2, Home, Landmark, Store, ArrowRight } from "lucide-react";
 import propertiesForSaleImg from "@assets/1771996029297_1774099972125.png";
+import apartmentsForRentImg from "@assets/1771996059819_1774100076470.png";
 
 export default function BuyersRenters() {
   const categories = [
     { title: "Properties for Sale", path: "/properties-for-sale", icon: Building2, color: "bg-blue-50 text-blue-600", image: propertiesForSaleImg },
-    { title: "Apartments for Rent", path: "/apartments-for-rent", icon: Home, color: "bg-orange-50 text-orange-600", image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80" },
+    { title: "Apartments for Rent", path: "/apartments-for-rent", icon: Home, color: "bg-orange-50 text-orange-600", image: apartmentsForRentImg },
     { title: "Lands for Sale", path: "/lands-for-sale", icon: Landmark, color: "bg-green-50 text-green-600", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80" },
     { title: "Shops for Lease", path: "/shops-for-lease", icon: Store, color: "bg-purple-50 text-purple-600", image: "https://images.unsplash.com/photo-1582036573752-fb51654e5659?w=600&q=80" },
   ];
