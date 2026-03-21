@@ -38,16 +38,32 @@ export default function Login() {
           setLocation("/");
         }
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error: signUpError } = await supabase.auth.signUp({
           email,
           password,
           options: { data: { username } },
         });
-        if (error) {
-          toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
-        } else {
-          toast({ title: "Account created! You are now logged in." });
-          setLocation("/");
+
+        if (signUpError) {
+          toast({ title: "Sign up failed", description: signUpError.message, variant: "destructive" });
+          return;
+        }
+
+        if (data.user) {
+          const { error: profileError } = await supabase
+            .from("profiles")
+            .insert({ id: data.user.id, username });
+
+          if (profileError) {
+            toast({
+              title: "Account created but profile setup failed",
+              description: profileError.message,
+              variant: "destructive",
+            });
+          } else {
+            toast({ title: "Account created! You are now logged in." });
+            setLocation("/");
+          }
         }
       }
     } finally {
