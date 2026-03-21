@@ -221,26 +221,14 @@ export default function Home() {
               </Link>
             </motion.div>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4 pt-12">
-                <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 text-center">
-                  <h3 className="text-4xl font-display font-bold text-accent mb-2">500+</h3>
-                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Properties Sold</p>
-                </div>
-                <div className="bg-primary text-white p-6 rounded-3xl shadow-lg text-center">
-                  <h3 className="text-4xl font-display font-bold mb-2">100%</h3>
-                  <p className="text-sm font-medium text-white/70 uppercase tracking-wide">Verified Listings</p>
-                </div>
+            <div className="flex flex-col gap-4 justify-center">
+              <div className="bg-primary text-white p-8 rounded-3xl shadow-lg text-center">
+                <h3 className="text-5xl font-display font-bold mb-2">100%</h3>
+                <p className="text-sm font-medium text-white/70 uppercase tracking-wide">Verified Listings</p>
               </div>
-              <div className="space-y-4">
-                <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 text-center">
-                  <h3 className="text-4xl font-display font-bold text-accent mb-2">1k+</h3>
-                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Happy Tenants</p>
-                </div>
-                <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 text-center">
-                  <h3 className="text-4xl font-display font-bold text-accent mb-2">24/7</h3>
-                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Support Team</p>
-                </div>
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center">
+                <h3 className="text-5xl font-display font-bold text-accent mb-2">24/7</h3>
+                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Support Team</p>
               </div>
             </div>
           </div>

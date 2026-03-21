@@ -28,7 +28,7 @@ Property Type: ${formData.type}
 Location: ${formData.location}
 Description: ${formData.description}`;
 
-    const url = `https://wa.me/2348000000000?text=${encodeURIComponent(text)}`;
+    const url = `https://wa.me/2349164069005?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
     setIsOpen(false);
   };

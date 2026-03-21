@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { MapPin, Maximize, Send, CornerDownRight, Loader2 } from "lucide-react";
+import { MapPin, Maximize, Send, CornerDownRight, Loader2, Star, ChevronDown, ChevronUp } from "lucide-react";
 import { Property } from "@/lib/mock-data";
 import { supabase, type Comment } from "@/lib/supabase";
 import { useAuth } from "@/hooks/use-auth";
@@ -9,6 +9,12 @@ import { Input } from "@/components/ui/input";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
+
+export type Review = {
+  name: string;
+  rating: number;
+  text: string;
+};
 
 async function fetchUsernameFromProfiles(userId: string): Promise<string> {
   const { data, error } = await supabase
@@ -24,7 +30,12 @@ async function fetchUsernameFromProfiles(userId: string): Promise<string> {
   return data.username as string;
 }
 
-export function PropertyCard({ property }: { property: Property }) {
+interface PropertyCardProps {
+  property: Property;
+  reviews?: Review[];
+}
+
+export function PropertyCard({ property, reviews }: PropertyCardProps) {
   const [activeImage, setActiveImage] = useState(property.mainImage);
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
@@ -32,6 +43,7 @@ export function PropertyCard({ property }: { property: Property }) {
   const [replyingToId, setReplyingToId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [isSubmittingReply, setIsSubmittingReply] = useState(false);
+  const [reviewsOpen, setReviewsOpen] = useState(false);
   const [, setLocation] = useLocation();
   const { user } = useAuth();
 
@@ -164,10 +176,7 @@ export function PropertyCard({ property }: { property: Property }) {
                 ))}
 
                 {isReplying ? (
-                  <form
-                    onSubmit={(e) => submitReply(e, comment.id)}
-                    className="flex gap-2 mt-2"
-                  >
+                  <form onSubmit={(e) => submitReply(e, comment.id)} className="flex gap-2 mt-2">
                     <Input
                       autoFocus
                       placeholder="Write a reply..."
@@ -221,49 +230,68 @@ export function PropertyCard({ property }: { property: Property }) {
 
   return (
     <div className="bg-card rounded-2xl overflow-hidden shadow-xl border border-border/50 transition-all hover:shadow-2xl">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 bg-gray-100">
-        <div className="relative aspect-video lg:aspect-auto lg:h-[400px]">
-          <img
-            src={activeImage}
-            alt={property.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute top-4 left-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-bold shadow-md">
-            {property.price}
-          </div>
-        </div>
 
-        <div className="grid grid-cols-2 grid-rows-2 gap-1 h-[200px] lg:h-[400px]">
-          <div className="relative bg-black cursor-pointer group">
-            <iframe
-              src={property.videoUrl}
-              title="Property Video"
-              className="w-full h-full opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="bg-white/20 backdrop-blur-md rounded-full p-3 group-hover:scale-110 transition-transform">
-                <div className="w-0 h-0 border-t-8 border-t-transparent border-l-[12px] border-l-white border-b-8 border-b-transparent ml-1"></div>
-              </div>
-            </div>
-            <div className="absolute bottom-2 left-2 text-xs text-white font-medium bg-black/50 px-2 py-1 rounded">Video Tour</div>
-          </div>
-
-          {property.gallery.slice(0, 3).map((img, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveImage(img)}
-              className="relative overflow-hidden group focus:outline-none"
-            >
-              <img src={img} alt={`Gallery ${i}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              {activeImage === img && (
-                <div className="absolute inset-0 ring-4 ring-inset ring-accent"></div>
-              )}
-            </button>
-          ))}
+      {/* Video — standalone full-width on top */}
+      <div className="relative w-full aspect-video bg-black">
+        <iframe
+          src={property.videoUrl}
+          title="Property Video Tour"
+          className="w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+        <div className="absolute bottom-3 left-3 text-xs text-white font-medium bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">
+          Video Tour
         </div>
       </div>
 
+      {/* Image gallery row below video */}
+      <div className="grid grid-cols-4 gap-1 bg-gray-100">
+        <button
+          onClick={() => setActiveImage(property.mainImage)}
+          className="relative overflow-hidden group focus:outline-none h-32"
+        >
+          <img
+            src={property.mainImage}
+            alt={property.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+          <div className="absolute top-2 left-2 bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs font-bold shadow-md">
+            {property.price}
+          </div>
+          {activeImage === property.mainImage && (
+            <div className="absolute inset-0 ring-4 ring-inset ring-accent" />
+          )}
+        </button>
+
+        {property.gallery.slice(0, 3).map((img, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveImage(img)}
+            className="relative overflow-hidden group focus:outline-none h-32"
+          >
+            <img
+              src={img}
+              alt={`Gallery ${i + 1}`}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            {activeImage === img && (
+              <div className="absolute inset-0 ring-4 ring-inset ring-accent" />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Selected image preview */}
+      <div className="relative w-full h-64 md:h-80 overflow-hidden bg-gray-200">
+        <img
+          src={activeImage}
+          alt={property.title}
+          className="w-full h-full object-cover transition-all duration-500"
+        />
+      </div>
+
+      {/* Content */}
       <div className="p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
           <div>
@@ -273,7 +301,7 @@ export function PropertyCard({ property }: { property: Property }) {
               <span className="flex items-center gap-1"><Maximize className="w-4 h-4 text-accent" /> {property.size}</span>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <WhatsAppButton
               label="Virtual Inspection"
               variant="outline"
@@ -298,6 +326,43 @@ export function PropertyCard({ property }: { property: Property }) {
           </div>
         </div>
 
+        {/* Collapsible Tenant Reviews — shown only when reviews prop is provided */}
+        {reviews && reviews.length > 0 && (
+          <div className="border-t pt-6 mb-6">
+            <button
+              onClick={() => setReviewsOpen(prev => !prev)}
+              className="flex items-center justify-between w-full group"
+            >
+              <div className="flex items-center gap-3">
+                <h4 className="font-display font-bold text-lg">Verified Tenant Reviews</h4>
+                <span className="text-xs bg-accent/10 text-accent font-semibold px-2 py-0.5 rounded-full">
+                  {reviews.length}
+                </span>
+              </div>
+              {reviewsOpen
+                ? <ChevronUp className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                : <ChevronDown className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />}
+            </button>
+
+            {reviewsOpen && (
+              <div className="mt-5 grid md:grid-cols-3 gap-4">
+                {reviews.map((rev, i) => (
+                  <div key={i} className="bg-gray-50 p-5 rounded-xl border border-gray-100">
+                    <div className="flex gap-1 mb-3">
+                      {[...Array(rev.rating)].map((_, idx) => (
+                        <Star key={idx} className="w-4 h-4 fill-accent text-accent" />
+                      ))}
+                    </div>
+                    <p className="text-gray-700 text-sm mb-4">"{rev.text}"</p>
+                    <p className="font-bold text-sm text-primary">{rev.name}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Comments */}
         <div className="border-t pt-8">
           <h4 className="font-display font-bold text-lg mb-6">Questions & Comments</h4>
 
@@ -342,7 +407,7 @@ export function PropertyCard({ property }: { property: Property }) {
 
 function CommentBubble({ comment, isReply = false }: { comment: Comment; isReply?: boolean }) {
   return (
-    <div className={`flex gap-3 ${isReply ? "" : ""}`}>
+    <div className="flex gap-3">
       <div className={`${isReply ? "w-8 h-8" : "w-10 h-10"} rounded-full bg-primary/10 flex items-center justify-center shrink-0`}>
         <span className={`font-bold text-primary ${isReply ? "text-xs" : "text-sm"}`}>
           {comment.username.charAt(0).toUpperCase()}

@@ -17,7 +17,7 @@ export function WhatsAppButton({
   
   const handleClick = () => {
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/2348000000000?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/2349164069005?text=${encodedMessage}`;
     window.open(whatsappUrl, "_blank");
   };
 
