@@ -159,7 +159,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-2xl">
-              <h2 className="text-4xl font-display font-bold mb-4">Trusted by Thousands</h2>
+              <h2 className="text-4xl font-display font-bold mb-4">Why Choose Fairview</h2>
               <p className="text-primary-foreground/80 text-lg">Experiences from property owners and seekers<br/>What users are saying:</p>
             </div>
             <div className="flex items-center gap-1 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
@@ -200,9 +200,9 @@ export default function Home() {
             >
               <h2 className="text-4xl font-display font-bold text-primary mb-6">Registered & Verified</h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Fairview Realty is a fully registered and legally recognized real estate firm in Nigeria. 
-                We prioritize absolute transparency, legal compliance, and customer security in every transaction. 
-                Your investments are safe with a team that operates strictly by the books.
+                We understand the real challenges of buying, selling or renting property in Ile Ife — because we've been there for years.
+                We're not just here to showcase properties — we're here to make your journey simpler, less expensive and less stressful.
+                Property transactions don't have to be complicated.
               </p>
               
               <div className="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-8 max-w-sm transform -rotate-2 hover:rotate-0 transition-transform duration-300">
