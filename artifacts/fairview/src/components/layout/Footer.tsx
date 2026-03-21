@@ -20,7 +20,7 @@ export function Footer() {
               <span className="font-display font-bold text-2xl tracking-tight">Fairview.</span>
             </Link>
             <p className="text-primary-foreground/80 leading-relaxed text-sm">
-              Your trusted partner in Nigerian real estate. We connect property owners with genuine buyers and renters seamlessly.
+              Fairview — helping you showcase or find property in Ile Ife, the easy way.
             </p>
             <div className="flex gap-4">
               <a href="#" className="bg-primary-foreground/10 p-2 rounded-full hover:bg-accent hover:text-white transition-colors">
@@ -63,15 +63,15 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-primary-foreground/80">
                 <MapPin className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                <span>Building beside Phiam Pharmacy, Parakin, Ile Ife, Osun State.</span>
+                <span>No 50 Raymond Adedoyin way, beside Nitel, Parakin, Ile Ife, Osun.</span>
               </li>
               <li className="flex items-center gap-3 text-primary-foreground/80">
                 <Phone className="w-5 h-5 text-accent shrink-0" />
-                <span>+234 800 000 0000</span>
+                <span>09164069005</span>
               </li>
               <li className="flex items-center gap-3 text-primary-foreground/80">
                 <Mail className="w-5 h-5 text-accent shrink-0" />
-                <span>hello@fairviewrealty.ng</span>
+                <span>fairviewrealtyhub@gmail.com</span>
               </li>
             </ul>
           </div>

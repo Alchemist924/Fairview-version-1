@@ -160,7 +160,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-display font-bold mb-4">Trusted by Thousands</h2>
-              <p className="text-primary-foreground/80 text-lg">Don't just take our word for it. Here's what our clients have to say based on their Google Reviews.</p>
+              <p className="text-primary-foreground/80 text-lg">Experiences from property owners and seekers<br/>What users are saying:</p>
             </div>
             <div className="flex items-center gap-1 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
               <Star className="w-5 h-5 fill-accent text-accent" />

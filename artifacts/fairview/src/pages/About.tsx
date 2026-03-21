@@ -58,7 +58,7 @@ export default function About() {
                     <MapPin className="w-6 h-6 text-accent shrink-0" />
                     <div>
                       <h4 className="font-bold text-lg mb-1">Head Office</h4>
-                      <p className="text-primary-foreground/80">Building beside Phiam Pharmacy,<br/>Parakin, Ile-Ife, Osun State,<br/>Nigeria.</p>
+                      <p className="text-primary-foreground/80">No 50 Raymond Adedoyin way,<br/>beside Nitel, Parakin,<br/>Ile Ife, Osun.</p>
                     </div>
                   </div>
                   
@@ -66,7 +66,7 @@ export default function About() {
                     <Phone className="w-6 h-6 text-accent shrink-0" />
                     <div>
                       <h4 className="font-bold text-lg mb-1">Phone</h4>
-                      <p className="text-primary-foreground/80">+234 800 000 0000</p>
+                      <p className="text-primary-foreground/80">09164069005</p>
                     </div>
                   </div>
 
@@ -74,7 +74,7 @@ export default function About() {
                     <Mail className="w-6 h-6 text-accent shrink-0" />
                     <div>
                       <h4 className="font-bold text-lg mb-1">Email</h4>
-                      <p className="text-primary-foreground/80">hello@fairviewrealty.ng</p>
+                      <p className="text-primary-foreground/80">fairviewrealtyhub@gmail.com</p>
                     </div>
                   </div>
                 </div>
