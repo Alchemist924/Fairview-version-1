@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
+import addPropertyImg from "@assets/1772203784575_1774101672403.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,9 +54,9 @@ Description: ${formData.description}`;
             animate={{ opacity: 1, x: 0 }}
             className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white"
           >
-            <img 
-              src={`${import.meta.env.BASE_URL}images/add-property.png`}
-              alt="Steps to add property" 
+            <img
+              src={addPropertyImg}
+              alt="Steps to add property"
               className="w-full h-auto object-cover"
             />
           </motion.div>
