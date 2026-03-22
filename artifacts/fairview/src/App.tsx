@@ -33,7 +33,7 @@ function Router() {
         {() => (
           <PropertyListingPage 
             title="Lands for Sale" 
-            intro="Secure verified plots of Land across Ife with confidence. Looking for something specific? Tap the WhatsApp icon below – we'll help you explore the best options."
+            intro={<>Secure verified plots of Land across Ife with confidence.<br />Looking for something specific?<br />Tap the WhatsApp icon below – we'll help you explore the best options.</>}
             category="land"
           />
         )}
@@ -43,7 +43,7 @@ function Router() {
         {() => (
           <PropertyListingPage 
             title="Properties for Sale" 
-            intro="Find your next home or investment with ease. Browse verified residential and commercial properties in Ife, ready for transfer. Need something specific? Tap the WhatsApp icon below – we'll help you explore the right options."
+            intro={<>Find your next home or investment with ease.<br />Browse verified residential and commercial properties in Ife, ready for transfer.<br />Need something specific?<br />Tap the WhatsApp icon below – we'll help you explore the right options.</>}
             category="property"
           />
         )}
@@ -53,9 +53,10 @@ function Router() {
         {() => (
           <PropertyListingPage 
             title="Apartments for Rent" 
-            intro="Find a variety of available living spaces in Ile Ife, ready for you to move in. Looking for something specific? Tap the WhatsApp icon below – we'll help you explore the best options."
+            intro={<>Find a variety of available living spaces in Ile Ife, ready for you to move in.<br />Looking for something specific?<br />Tap the WhatsApp icon below – we'll help you explore the best options.</>}
             category="apartment"
             showReviews={true}
+            hideComments={true}
           />
         )}
       </Route>
@@ -64,9 +65,10 @@ function Router() {
         {() => (
           <PropertyListingPage 
             title="Shops for Lease" 
-            intro="Check out available commercial spaces and shops in Ile Ife, for your type of business. Need something specific? Tap the WhatsApp icon below – we'll guide you to the right options."
+            intro={<>Check out available commercial spaces and shops in Ile Ife, for your type of business.<br />Need something specific?<br />Tap the WhatsApp icon below – we'll guide you to the right options.</>}
             category="shop"
             showReviews={true}
+            hideComments={true}
           />
         )}
       </Route>

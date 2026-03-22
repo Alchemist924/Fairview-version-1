@@ -33,9 +33,10 @@ async function fetchUsernameFromProfiles(userId: string): Promise<string> {
 interface PropertyCardProps {
   property: Property;
   reviews?: Review[];
+  hideComments?: boolean;
 }
 
-export function PropertyCard({ property, reviews }: PropertyCardProps) {
+export function PropertyCard({ property, reviews, hideComments = false }: PropertyCardProps) {
   const [activeImage, setActiveImage] = useState(property.mainImage);
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
@@ -363,7 +364,7 @@ export function PropertyCard({ property, reviews }: PropertyCardProps) {
         )}
 
         {/* Comments */}
-        <div className="border-t pt-8">
+        {!hideComments && <div className="border-t pt-8">
           <h4 className="font-display font-bold text-lg mb-6">Questions & Comments</h4>
 
           <div className="mb-6">
@@ -399,7 +400,7 @@ export function PropertyCard({ property, reviews }: PropertyCardProps) {
               </Button>
             </div>
           )}
-        </div>
+        </div>}
       </div>
     </div>
   );
