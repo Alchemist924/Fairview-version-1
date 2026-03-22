@@ -41,7 +41,7 @@ Description: ${formData.description}`;
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">Put your property in front of the right people</h1>
           <p className="text-lg md:text-xl text-primary-foreground/80 leading-relaxed">
-            Find serious buyers or the right tenants — smooth and straightforward.<br className="hidden md:block" />
+            Find serious buyers or the right tenants — smooth and straightforward. <br className="hidden md:block" />
             With Fairview, getting your property seen and secured is simple, fast and handled for you.
           </p>
         </div>
