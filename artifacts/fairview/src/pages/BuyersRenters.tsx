@@ -20,9 +20,12 @@ export default function BuyersRenters() {
     <Layout>
       <section className="bg-primary text-white pt-24 pb-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">Find Your Next Home or Space</h1>
-          <p className="text-lg md:text-xl text-primary-foreground/80 leading-relaxed">
-            Whether you are buying your first home, renting a cozy apartment, or securing a commercial space for your business, we make the search effortless.
+          <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">Find your next home, space, or property</h1>
+          <p className="text-lg md:text-xl text-primary-foreground/80 leading-relaxed space-y-2">
+            Finding property in Ife shouldn't be double trouble.<br />
+            Real Estate is a basic need — we shouldn't have to pay high fees, on top of already high property &amp; housing costs.<br />
+            With Fairview — Enjoy only a 5% finder's fee for property and ₦1,000 for physical or virtual inspections.<br />
+            Walk away, confident you've secured the best available option – no stress, no doubts.
           </p>
         </div>
       </section>
@@ -38,9 +41,9 @@ export default function BuyersRenters() {
             <h2 className="text-3xl font-display font-bold text-primary mb-8">How to Find Property</h2>
             <div className="space-y-8 max-w-2xl">
               {[
-                { step: "01", title: "Select a Category", desc: "Choose from our verified listings of lands, houses, apartments, or shops below." },
-                { step: "02", title: "Review & Ask", desc: "View detailed photos, watch the virtual tour video, and read/ask questions in the comments section." },
-                { step: "03", title: "Book Inspection", desc: "Click the Virtual or Physical inspection buttons to instantly connect with our agents on WhatsApp." }
+                { step: "01", title: "Browse", desc: "Click on any property type below to explore available properties/spaces." },
+                { step: "02", title: "Book", desc: "Filter by price, type and location, then book a physical or virtual inspection for properties you're interested in." },
+                { step: "03", title: "Buy", desc: "Complete your inspection and go ahead to rent or buy with confidence." }
               ].map((s) => (
                 <div key={s.step} className="flex gap-6">
                   <div className="font-display text-4xl font-bold text-accent opacity-50 shrink-0">{s.step}</div>
