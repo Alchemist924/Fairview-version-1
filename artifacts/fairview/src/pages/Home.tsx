@@ -115,6 +115,14 @@ export default function Home() {
                 <span><span className="font-bold">Buy:</span> Rent or Buy after confirmation.</span>
               </li>
             </ol>
+            <div className="flex justify-center mt-8">
+              <Link href="/buyers-renters">
+                <Button size="lg" className="text-lg h-14 px-8 bg-accent hover:bg-accent/90 text-white border-none shadow-xl shadow-accent/20 rounded-xl">
+                  <Search className="mr-2 w-5 h-5" />
+                  Buyer / Renter
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Property Owners subsection */}
@@ -150,6 +158,14 @@ export default function Home() {
                 <span>Once ownership is confirmed, we begin marketing to serious buyers or renters.</span>
               </li>
             </ol>
+            <div className="flex justify-center mt-8">
+              <Link href="/property-owners">
+                <Button size="lg" className="text-lg h-14 px-8 bg-primary hover:bg-primary/90 text-white border-none shadow-xl shadow-primary/20 rounded-xl">
+                  <Key className="mr-2 w-5 h-5" />
+                  Property Owner
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
