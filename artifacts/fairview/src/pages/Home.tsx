@@ -201,6 +201,21 @@ export default function Home() {
               ))}
             </div>
           </div>
+
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-12">
+            <Link href="/buyers-renters">
+              <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 bg-accent hover:bg-accent/90 text-white border-none shadow-xl shadow-accent/20 rounded-xl">
+                <Search className="mr-2 w-5 h-5" />
+                Buyer / Renter
+              </Button>
+            </Link>
+            <Link href="/property-owners">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-14 px-8 bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-sm rounded-xl">
+                <Key className="mr-2 w-5 h-5" />
+                Property Owner
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
