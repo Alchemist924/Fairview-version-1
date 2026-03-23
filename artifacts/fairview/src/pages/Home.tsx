@@ -205,7 +205,7 @@ export default function Home() {
                 Property transactions don't have to be complicated.
               </p>
               
-              <div className="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-8 max-w-sm transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+              <div className="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-8 max-w-sm">
                 <img 
                   src={`${import.meta.env.BASE_URL}images/cac-cert.png`} 
                   alt="CAC Registration Certificate" 
