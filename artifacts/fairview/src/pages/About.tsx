@@ -1,5 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
-import { CheckCircle2, MapPin, Phone, Mail } from "lucide-react";
+import { CheckCircle2, MapPin, Phone, Mail, Clock } from "lucide-react";
 
 export default function About() {
   return (
@@ -17,7 +17,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
             <div>
-              <h2 className="text-3xl font-display font-bold text-primary mb-6">Our Story</h2>
+              <h2 className="text-3xl font-display font-bold text-primary mb-6">Platform Purpose</h2>
               <div className="space-y-4 text-lg text-gray-600 leading-relaxed">
                 <p>
                   Fairview Realty was born out of a simple necessity: the Nigerian real estate market needed a platform that people could truly trust. Too often, buyers and renters face complex, opaque processes, while property owners struggle to find genuine clients.
@@ -35,8 +35,7 @@ export default function About() {
                   "100% Verified Properties - No scams, no fake listings.",
                   "Virtual & Physical Inspections tailored to your schedule.",
                   "Transparent Legal Documentation.",
-                  "Dedicated Agents from inquiry to moving day.",
-                  "Vast network across Lagos, Abuja, Port Harcourt, and Osun."
+                  "Dedicated Customer care from inquiry to moving day."
                 ].map((point, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-6 h-6 text-accent shrink-0 mt-0.5" />
@@ -75,6 +74,15 @@ export default function About() {
                     <div>
                       <h4 className="font-bold text-lg mb-1">Email</h4>
                       <p className="text-primary-foreground/80">fairviewrealtyhub@gmail.com</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <Clock className="w-6 h-6 text-accent shrink-0" />
+                    <div>
+                      <h4 className="font-bold text-lg mb-1">Business Hours</h4>
+                      <p className="text-primary-foreground/80">Monday – Saturday: 9:00AM – 6:00PM</p>
+                      <p className="text-primary-foreground/80">Sunday: Closed</p>
                     </div>
                   </div>
                 </div>
