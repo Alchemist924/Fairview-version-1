@@ -9,7 +9,7 @@ export default function About() {
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">About Fairview</h1>
             <p className="text-lg md:text-xl text-primary-foreground/80 leading-relaxed">
-              Redefining real estate in Nigeria through transparency, innovation, and unwavering integrity.
+              Fairview was built to simplify how properties are showcased in Ile Ife and how people find them.
             </p>
           </div>
         </section>
@@ -20,11 +20,22 @@ export default function About() {
               <h2 className="text-3xl font-display font-bold text-primary mb-6">Platform Purpose</h2>
               <div className="space-y-4 text-lg text-gray-600 leading-relaxed">
                 <p>
-                  Fairview Realty was born out of a simple necessity: the Nigerian real estate market needed a platform that people could truly trust. Too often, buyers and renters face complex, opaque processes, while property owners struggle to find genuine clients.
+                  We understand how stressful property search can be – from moving around endlessly to dealing with unclear pricing and unreliable options.
                 </p>
                 <p>
-                  We act as the reliable bridge. By combining modern digital experiences (like our signature virtual inspections) with rigorous physical verification processes, we ensure that what you see online is exactly what you get in reality.
+                  For property owners, finding the right tenants or serious buyers can be just as challenging.
                 </p>
+                <p>That's why Fairview serves as a trusted platform where:</p>
+                <ul className="space-y-2 mt-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-1" />
+                    <span><strong>Property Owners</strong> can have their properties showcased to the right audience.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-1" />
+                    <span><strong>Buyers and renters</strong> can find verified options with ease.</span>
+                  </li>
+                </ul>
               </div>
             </div>
             
