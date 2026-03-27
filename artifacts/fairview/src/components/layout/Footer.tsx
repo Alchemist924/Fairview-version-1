@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa";
 
 export function Footer() {
   return (
@@ -23,14 +24,14 @@ export function Footer() {
               Fairview — helping you showcase or find property in Ile Ife, the easy way.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="bg-primary-foreground/10 p-2 rounded-full hover:bg-accent hover:text-white transition-colors">
-                <Facebook className="w-5 h-5" />
+              <a href="https://www.facebook.com/share/1Hn6L1JKjs/" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 p-2 rounded-full hover:bg-accent hover:text-white transition-colors">
+                <FaFacebook className="w-5 h-5" />
               </a>
-              <a href="#" className="bg-primary-foreground/10 p-2 rounded-full hover:bg-accent hover:text-white transition-colors">
-                <Twitter className="w-5 h-5" />
+              <a href="https://youtube.com/@fairview-ileife?si=BGFTGdu28LIWPc-L" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 p-2 rounded-full hover:bg-accent hover:text-white transition-colors">
+                <FaYoutube className="w-5 h-5" />
               </a>
-              <a href="#" className="bg-primary-foreground/10 p-2 rounded-full hover:bg-accent hover:text-white transition-colors">
-                <Instagram className="w-5 h-5" />
+              <a href="https://www.instagram.com/fairview_ife?igsh=OHZkMXR6YWZ0em5i" target="_blank" rel="noopener noreferrer" className="bg-primary-foreground/10 p-2 rounded-full hover:bg-accent hover:text-white transition-colors">
+                <FaInstagram className="w-5 h-5" />
               </a>
             </div>
           </div>
