@@ -306,12 +306,12 @@ export function PropertyCard({ property, reviews, hideComments = false }: Proper
             <WhatsAppButton
               label="Virtual Inspection"
               variant="outline"
-              message={`Hello Fairview, I would like to book a Virtual Inspection for ${property.title} located at ${property.location}`}
+              message={`Hi,\nI would like to book an inspection\nProperty: ${property.title}\nLocation: ${property.location}\nBooking Type: Virtual Inspection`}
             />
             <WhatsAppButton
               label="Physical Inspection"
               variant="accent"
-              message={`Hello Fairview, I would like to book a Physical Inspection for ${property.title} located at ${property.location}`}
+              message={`Hi,\nI would like to book an inspection\nProperty: ${property.title}\nLocation: ${property.location}\nBooking Type: Physical Inspection`}
             />
           </div>
         </div>
