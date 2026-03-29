@@ -1,0 +1,99 @@
+Set up Netlify CMS (Decap CMS) and connect it to this React real estate application without changing the existing design.
+
+IMPORTANT:
+- DO NOT redesign or simplify the UI
+- KEEP all existing layout structure exactly as is
+- ONLY replace hardcoded/dummy data with dynamic CMS data
+- There are two layout variations that must be preserved
+
+APP STRUCTURE:
+- All property pages share the same top layout
+- Bottom section differs:
+  - Rent/Lease pages → show admin reviews
+  - Sale pages → show user comments (Supabase-ready)
+
+TASKS:
+
+1. Add CMS structure:
+- /public/admin/index.html
+- /public/admin/config.yml
+- /content/properties/
+
+2. Configure CMS collection "properties" with fields:
+- title (string)
+- price (string)
+- location (string)
+- size (number)
+- category (apartment, shop, land)
+- listingType (rent, lease, sale)
+- mainImage (image)
+- gallery (list of images)
+- videoUrl (string)
+- description (text)
+- features (list of strings)
+
+- reviews (list, for admin reviews only):
+  - name (string)
+  - text (text)
+  - rating (number)
+
+3. Remove dummy content:
+- Remove all hardcoded property data
+- KEEP layout, sections, and styling intact
+
+4. Fetch CMS data:
+- Use React (useEffect + state)
+- Store in: properties
+
+5. Render top section dynamically:
+- Replace:
+  - title
+  - price
+  - location
+  - size
+  - images
+  - video
+  - description
+  - features
+
+6. Conditional Bottom Section:
+
+IF listingType === "rent" OR "lease":
+- Render admin reviews from CMS (reviews field)
+
+IF listingType === "sale":
+- Render existing comment section UI (do NOT remove it)
+- Keep it ready for Supabase integration
+- Do NOT connect Supabase yet
+
+7. Filtering (listing pages):
+
+Apartments for Rent:
+category = "apartment" AND listingType = "rent"
+
+Shops for Lease:
+category = "shop" AND listingType = "lease"
+
+Lands for Sale:
+category = "land" AND listingType = "sale"
+
+Properties for Sale:
+listingType = "sale"
+
+8. Pagination:
+- Show limited number per page (e.g. 6)
+- Add next/previous buttons
+
+9. Property ID:
+- Use property.slug as unique ID
+- Ensure it is accessible in all components
+
+10. Code Structure:
+- Use React components
+- No direct DOM manipulation
+- Keep code modular and clean
+
+OUTPUT:
+- Working React code with CMS-connected data
+- Layout unchanged
+- Supports both review and comment sections correctly

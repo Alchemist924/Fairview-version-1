@@ -1,0 +1,23 @@
+{
+  "slug": "apt-2bd-oke-ogbo",
+  "title": "2 Bedroom Flat – Oke Ogbo",
+  "price": "₦350,000/year",
+  "location": "Oke Ogbo, Ile Ife",
+  "size": "2 Bedrooms",
+  "category": "apartment",
+  "listingType": "rent",
+  "mainImage": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1502672260266-1c1de2d93688?w=400&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&q=80",
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "description": "Spacious 2-bedroom flat located in a peaceful estate in Oke Ogbo. Features a well-sized sitting room, modern kitchen fittings, and constant electricity via a community prepaid meter.",
+  "features": ["2 Bedrooms", "Prepaid Meter", "Modern Kitchen", "Security Gate", "Parking Space"],
+  "reviews": [
+    { "name": "Tunde B.", "text": "Spacious rooms and great natural lighting. The compound is clean and well managed.", "rating": 5 },
+    { "name": "Aisha M.", "text": "Security and peace of mind is exactly what I was looking for. Highly recommended.", "rating": 5 },
+    { "name": "Chinedu O.", "text": "Living here has been a breeze. Maintenance is top-notch!", "rating": 4 }
+  ]
+}

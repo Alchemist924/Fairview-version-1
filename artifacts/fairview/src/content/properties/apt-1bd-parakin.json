@@ -1,0 +1,22 @@
+{
+  "slug": "apt-1bd-parakin",
+  "title": "1 Bedroom Apartment – Parakin",
+  "price": "₦180,000/year",
+  "location": "Parakin, Ile Ife",
+  "size": "1 Bedroom",
+  "category": "apartment",
+  "listingType": "rent",
+  "mainImage": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1502672260266-1c1de2d93688?w=400&q=80",
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "description": "Clean and well-maintained 1-bedroom apartment in the heart of Parakin. Tiled floors throughout, a functional kitchen, and reliable water supply. Ideal for a single occupant or couple.",
+  "features": ["1 Bedroom", "Tiled Floors", "Running Water", "Close to Market", "Secure Compound"],
+  "reviews": [
+    { "name": "Blessing A.", "text": "Very affordable and the landlord is responsive. I've been here a year and it's been great.", "rating": 5 },
+    { "name": "Seun O.", "text": "Quiet environment, good for studying. Water supply is reliable.", "rating": 4 }
+  ]
+}

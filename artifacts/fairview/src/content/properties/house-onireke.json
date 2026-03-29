@@ -1,0 +1,19 @@
+{
+  "slug": "house-onireke",
+  "title": "3 Bedroom Bungalow – Onireke",
+  "price": "₦12,000,000",
+  "location": "Onireke, Ile Ife",
+  "size": "3 Bedrooms",
+  "category": "property",
+  "listingType": "sale",
+  "mainImage": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1600607687931-cecebd802404?w=400&q=80",
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "description": "Well-built 3-bedroom bungalow in a serene residential area in Onireke. Features POP ceiling, tiled floors throughout, a large compound and ample parking. Ready for immediate occupancy with all documents intact.",
+  "features": ["3 Bedrooms", "2 Bathrooms", "POP Ceiling", "Tiled Floors", "Large Compound", "Ample Parking"],
+  "reviews": []
+}

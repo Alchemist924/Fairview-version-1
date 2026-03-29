@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { MapPin, Maximize, Send, CornerDownRight, Loader2, Star, ChevronDown, ChevronUp } from "lucide-react";
-import { Property } from "@/lib/mock-data";
+import { Property, Review } from "@/lib/mock-data";
 import { supabase, type Comment } from "@/lib/supabase";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,6 @@ import { Input } from "@/components/ui/input";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
-
-export type Review = {
-  name: string;
-  rating: number;
-  text: string;
-};
 
 async function fetchUsernameFromProfiles(userId: string): Promise<string> {
   const { data, error } = await supabase

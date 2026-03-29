@@ -1,0 +1,19 @@
+{
+  "slug": "land-oke-ogbo",
+  "title": "300 sqm Corner Plot – Oke Ogbo",
+  "price": "₦1,800,000",
+  "location": "Oke Ogbo, Ile Ife",
+  "size": "300 sqm",
+  "category": "land",
+  "listingType": "sale",
+  "mainImage": "https://images.unsplash.com/photo-1529501304602-2e2f3ec0ec1e?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&q=80",
+    "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=400&q=80",
+    "https://images.unsplash.com/photo-1629196914216-1f912e753c15?w=400&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "description": "Corner piece plot of land in Oke Ogbo. Accessible tarred road, minimal flooding risk. Ideal for building a bungalow or small commercial structure. Documents ready for transfer.",
+  "features": ["Corner Piece", "Tarred Road Access", "Flat Terrain", "Fast Transfer", "Receipt Available"],
+  "reviews": []
+}

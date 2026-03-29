@@ -1,0 +1,19 @@
+{
+  "slug": "house-oke-ogbo",
+  "title": "4 Bedroom Duplex – Oke Ogbo",
+  "price": "₦25,000,000",
+  "location": "Oke Ogbo, Ile Ife",
+  "size": "4 Bedrooms",
+  "category": "property",
+  "listingType": "sale",
+  "mainImage": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1600607687931-cecebd802404?w=400&q=80",
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
+    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "description": "Tastefully finished 4-bedroom duplex in a secured estate in Oke Ogbo. Features a fitted kitchen, all-rooms en-suite bathrooms, dedicated BQ, and a rooftop terrace. Title: Deed of Assignment.",
+  "features": ["4 Bedrooms", "All En-Suite", "Fitted Kitchen", "BQ / Boys Quarters", "Rooftop Terrace", "Secured Estate"],
+  "reviews": []
+}

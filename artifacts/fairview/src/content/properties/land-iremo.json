@@ -1,0 +1,19 @@
+{
+  "slug": "land-iremo",
+  "title": "648 sqm Plot – Iremo",
+  "price": "₦2,500,000",
+  "location": "Iremo, Ile Ife",
+  "size": "648 sqm",
+  "category": "land",
+  "listingType": "sale",
+  "mainImage": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=400&q=80",
+    "https://images.unsplash.com/photo-1629196914216-1f912e753c15?w=400&q=80",
+    "https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?w=400&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "description": "Dry, surveyed 648 sqm plot of land in Iremo. Suitable for residential development. Located in a quiet, developing neighbourhood with good road access. Documents: Survey Plan and Purchase Receipt available.",
+  "features": ["Dry Land", "Surveyed", "Good Road Access", "Residential Area", "Survey Plan Available"],
+  "reviews": []
+}

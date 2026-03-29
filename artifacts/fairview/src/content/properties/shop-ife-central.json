@@ -1,0 +1,22 @@
+{
+  "slug": "shop-ife-central",
+  "title": "Office / Shop Space – Ife Central",
+  "price": "₦200,000/year",
+  "location": "Ife Central, Ile Ife",
+  "size": "35 sqm",
+  "category": "shop",
+  "listingType": "lease",
+  "mainImage": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+  "gallery": [
+    "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=400&q=80",
+    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80",
+    "https://images.unsplash.com/photo-1555529771-835f59fc5efe?w=400&q=80"
+  ],
+  "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "description": "Versatile commercial space suited for an office or retail business in Ife Central. Includes a reception area and private back room. Centrally located with easy access from major roads in the city.",
+  "features": ["Reception Area", "Back Room", "Glass Frontage", "Security Guard", "Central Location"],
+  "reviews": [
+    { "name": "Emeka T.", "text": "Perfect location for a small business. My customers can easily find me here.", "rating": 5 },
+    { "name": "Fatima L.", "text": "Clean, accessible and affordable for the area. Recommend it.", "rating": 5 }
+  ]
+}

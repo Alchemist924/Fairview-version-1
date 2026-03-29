@@ -28,47 +28,46 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/property-owners" component={PropertyOwners} />
       <Route path="/buyers-renters" component={BuyersRenters} />
-      
+
       <Route path="/lands-for-sale">
         {() => (
-          <PropertyListingPage 
-            title="Lands for Sale" 
+          <PropertyListingPage
+            title="Lands for Sale"
             intro={<>Secure verified plots of Land across Ife with confidence.<br />Looking for something specific?<br />Tap the WhatsApp icon below – we'll help you explore the best options.</>}
-            category="land"
+            filterCategory="land"
+            filterListingType="sale"
           />
         )}
       </Route>
-      
+
       <Route path="/properties-for-sale">
         {() => (
-          <PropertyListingPage 
-            title="Properties for Sale" 
+          <PropertyListingPage
+            title="Properties for Sale"
             intro={<>Find your next home or investment with ease.<br />Browse verified residential and commercial properties in Ife, ready for transfer.<br />Need something specific?<br />Tap the WhatsApp icon below – we'll help you explore the right options.</>}
-            category="property"
+            filterListingType="sale"
           />
         )}
       </Route>
-      
+
       <Route path="/apartments-for-rent">
         {() => (
-          <PropertyListingPage 
-            title="Apartments for Rent" 
+          <PropertyListingPage
+            title="Apartments for Rent"
             intro={<>Find a variety of available living spaces in Ile Ife, ready for you to move in.<br />Looking for something specific?<br />Tap the WhatsApp icon below – we'll help you explore the best options.</>}
-            category="apartment"
-            showReviews={true}
-            hideComments={true}
+            filterCategory="apartment"
+            filterListingType="rent"
           />
         )}
       </Route>
-      
+
       <Route path="/shops-for-lease">
         {() => (
-          <PropertyListingPage 
-            title="Shops for Lease" 
+          <PropertyListingPage
+            title="Shops for Lease"
             intro={<>Check out available commercial spaces and shops in Ile Ife, for your type of business.<br />Need something specific?<br />Tap the WhatsApp icon below – we'll guide you to the right options.</>}
-            category="shop"
-            showReviews={true}
-            hideComments={true}
+            filterCategory="shop"
+            filterListingType="lease"
           />
         )}
       </Route>
@@ -76,7 +75,7 @@ function Router() {
       <Route path="/faqs" component={FAQs} />
       <Route path="/about" component={About} />
       <Route path="/login" component={Login} />
-      
+
       <Route component={NotFound} />
     </Switch>
   );
