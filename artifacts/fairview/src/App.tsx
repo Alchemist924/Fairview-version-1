@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import PropertyOwners from "./pages/PropertyOwners";
 import BuyersRenters from "./pages/BuyersRenters";
 import PropertyListingPage from "./pages/PropertyListingPage";
+import PropertyDetail from "./pages/PropertyDetail";
 import FAQs from "./pages/FAQs";
 import About from "./pages/About";
 import Login from "./pages/Login";
@@ -71,6 +72,8 @@ function Router() {
           />
         )}
       </Route>
+
+      <Route path="/property/:slug" component={PropertyDetail} />
 
       <Route path="/faqs" component={FAQs} />
       <Route path="/about" component={About} />

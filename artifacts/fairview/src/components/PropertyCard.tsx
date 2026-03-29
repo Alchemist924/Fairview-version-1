@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { useLocation } from "wouter";
-import { MapPin, Maximize, Send, CornerDownRight, Loader2, Star, ChevronDown, ChevronUp } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { MapPin, Maximize, Send, CornerDownRight, Loader2, Star, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import { Property, Review } from "@/lib/mock-data";
 import { supabase, type Comment } from "@/lib/supabase";
 import { useAuth } from "@/hooks/use-auth";
@@ -290,7 +290,12 @@ export function PropertyCard({ property, reviews, hideComments = false }: Proper
       <div className="p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
           <div>
-            <h3 className="text-2xl font-display font-bold text-foreground mb-2">{property.title}</h3>
+            <Link href={`/property/${property.slug}`}>
+              <h3 className="text-2xl font-display font-bold text-foreground mb-2 hover:text-accent transition-colors cursor-pointer inline-flex items-center gap-2 group">
+                {property.title}
+                <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-60 transition-opacity shrink-0" />
+              </h3>
+            </Link>
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1"><MapPin className="w-4 h-4 text-accent" /> {property.location}</span>
               <span className="flex items-center gap-1"><Maximize className="w-4 h-4 text-accent" /> {property.size}</span>
