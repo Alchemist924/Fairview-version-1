@@ -5,6 +5,7 @@ import { loadPropertiesFromCMS } from "@/lib/cms-loader";
 import { MapPin, Maximize, ArrowLeft, Tag, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { CommentSection } from "@/components/CommentSection";
 
 const CATEGORY_LABELS: Record<string, string> = {
   apartment: "Apartment",
@@ -163,7 +164,7 @@ export default function PropertyDetail() {
             )}
 
             {/* Inspection buttons */}
-            <div className="flex flex-wrap gap-3 pt-6 border-t">
+            <div className="flex flex-wrap gap-3 pt-6 border-t mb-10">
               <WhatsAppButton
                 label="Virtual Inspection"
                 variant="outline"
@@ -175,6 +176,9 @@ export default function PropertyDetail() {
                 message={`Hi,\nI would like to book an inspection\nProperty: ${property.title}\nLocation: ${property.location}\nBooking Type: Physical Inspection`}
               />
             </div>
+
+            {/* Comments */}
+            <CommentSection propertyId={property.slug} />
           </div>
         </div>
       </div>
