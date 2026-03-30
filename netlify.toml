@@ -1,0 +1,8 @@
+[build]
+  command = "pnpm --filter @workspace/fairview... run build"
+  publish = "artifacts/fairview/dist/public"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
