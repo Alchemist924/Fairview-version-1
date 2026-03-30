@@ -2,9 +2,6 @@ backend:
   name: git-gateway
   branch: main
 
-# Enable local_backend for development (requires: npx decap-server)
-local_backend: true
-
 media_folder: "artifacts/fairview/public/images/uploads"
 public_folder: "/images/uploads"
 
