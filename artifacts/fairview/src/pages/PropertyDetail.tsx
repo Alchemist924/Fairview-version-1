@@ -7,6 +7,16 @@ import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CommentSection } from "@/components/CommentSection";
 
+const PLACEHOLDER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='16' font-family='sans-serif'%3ENo Image%3C/text%3E%3C/svg%3E";
+
+function getEmbedUrl(url: string): string {
+  if (!url) return "";
+  if (url.includes("/embed/")) return url;
+  const match = url.match(/[?&]v=([^&]+)/);
+  return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+}
+
 const CATEGORY_LABELS: Record<string, string> = {
   apartment: "Apartment",
   shop: "Shop / Commercial",
@@ -57,6 +67,14 @@ export default function PropertyDetail() {
     );
   }
 
+  console.log("[PropertyDetail]", property.slug, {
+    mainImage: property.mainImage,
+    gallery: property.gallery,
+    videoUrl: property.videoUrl,
+  });
+
+  const embedUrl = getEmbedUrl(property.videoUrl);
+
   return (
     <Layout>
       {/* Back navigation */}
@@ -78,9 +96,10 @@ export default function PropertyDetail() {
           {/* Hero image */}
           <div className="relative w-full h-72 md:h-96 overflow-hidden bg-gray-200">
             <img
-              src={property.mainImage}
+              src={property.mainImage || PLACEHOLDER}
               alt={property.title}
               className="w-full h-full object-cover"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; }}
             />
             {/* Price badge */}
             <div className="absolute top-4 left-4 bg-accent text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">
@@ -94,12 +113,29 @@ export default function PropertyDetail() {
               {property.gallery.slice(0, 3).map((img, i) => (
                 <div key={i} className="overflow-hidden h-28">
                   <img
-                    src={img}
+                    src={img || PLACEHOLDER}
                     alt={`Gallery ${i + 1}`}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; }}
                   />
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Video tour */}
+          {embedUrl && (
+            <div className="relative w-full aspect-video bg-black">
+              <iframe
+                src={embedUrl}
+                title="Property Video Tour"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+              <div className="absolute bottom-3 left-3 text-xs text-white font-medium bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">
+                Video Tour
+              </div>
             </div>
           )}
 

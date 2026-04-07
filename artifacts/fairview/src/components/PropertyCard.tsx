@@ -5,6 +5,16 @@ import { Property, Review } from "@/lib/mock-data";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { CommentSection } from "./CommentSection";
 
+const PLACEHOLDER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='16' font-family='sans-serif'%3ENo Image%3C/text%3E%3C/svg%3E";
+
+function getEmbedUrl(url: string): string {
+  if (!url) return "";
+  if (url.includes("/embed/")) return url;
+  const match = url.match(/[?&]v=([^&]+)/);
+  return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+}
+
 interface PropertyCardProps {
   property: Property;
   reviews?: Review[];
@@ -12,41 +22,52 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({ property, reviews, hideComments = false }: PropertyCardProps) {
-  const [activeImage, setActiveImage] = useState(property.mainImage);
+  const [activeImage, setActiveImage] = useState(property.mainImage || PLACEHOLDER);
   const [reviewsOpen, setReviewsOpen] = useState(false);
+
+  console.log("[PropertyCard]", property.slug, {
+    mainImage: property.mainImage,
+    gallery: property.gallery,
+    videoUrl: property.videoUrl,
+  });
+
+  const embedUrl = getEmbedUrl(property.videoUrl);
 
   return (
     <div className="bg-card rounded-2xl overflow-hidden shadow-xl border border-border/50 transition-all hover:shadow-2xl">
 
-      {/* Video — standalone full-width on top */}
-      <div className="relative w-full aspect-video bg-black">
-        <iframe
-          src={property.videoUrl}
-          title="Property Video Tour"
-          className="w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-        <div className="absolute bottom-3 left-3 text-xs text-white font-medium bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">
-          Video Tour
+      {/* Video — only shown when a URL is provided */}
+      {embedUrl && (
+        <div className="relative w-full aspect-video bg-black">
+          <iframe
+            src={embedUrl}
+            title="Property Video Tour"
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <div className="absolute bottom-3 left-3 text-xs text-white font-medium bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">
+            Video Tour
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Image gallery row below video */}
+      {/* Image gallery row */}
       <div className="grid grid-cols-4 gap-1 bg-gray-100">
         <button
-          onClick={() => setActiveImage(property.mainImage)}
+          onClick={() => setActiveImage(property.mainImage || PLACEHOLDER)}
           className="relative overflow-hidden group focus:outline-none h-32"
         >
           <img
-            src={property.mainImage}
+            src={property.mainImage || PLACEHOLDER}
             alt={property.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; }}
           />
           <div className="absolute top-2 left-2 bg-accent text-accent-foreground px-2 py-0.5 rounded-full text-xs font-bold shadow-md">
             {property.price}
           </div>
-          {activeImage === property.mainImage && (
+          {activeImage === (property.mainImage || PLACEHOLDER) && (
             <div className="absolute inset-0 ring-4 ring-inset ring-accent" />
           )}
         </button>
@@ -54,15 +75,16 @@ export function PropertyCard({ property, reviews, hideComments = false }: Proper
         {property.gallery.slice(0, 3).map((img, i) => (
           <button
             key={i}
-            onClick={() => setActiveImage(img)}
+            onClick={() => setActiveImage(img || PLACEHOLDER)}
             className="relative overflow-hidden group focus:outline-none h-32"
           >
             <img
-              src={img}
+              src={img || PLACEHOLDER}
               alt={`Gallery ${i + 1}`}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; }}
             />
-            {activeImage === img && (
+            {activeImage === (img || PLACEHOLDER) && (
               <div className="absolute inset-0 ring-4 ring-inset ring-accent" />
             )}
           </button>
@@ -75,6 +97,7 @@ export function PropertyCard({ property, reviews, hideComments = false }: Proper
           src={activeImage}
           alt={property.title}
           className="w-full h-full object-cover transition-all duration-500"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; }}
         />
       </div>
 
