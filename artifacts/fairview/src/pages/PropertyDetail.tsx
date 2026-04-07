@@ -178,7 +178,7 @@ export default function PropertyDetail() {
             {property.description && (
               <div className="mb-8">
                 <h2 className="text-lg font-display font-bold text-primary mb-3">About this property</h2>
-                <p className="text-muted-foreground leading-relaxed">{property.description}</p>
+                <p className="text-muted-foreground leading-relaxed" style={{ whiteSpace: "pre-line" }}>{property.description ?? ""}</p>
               </div>
             )}
 

@@ -131,7 +131,7 @@ export function PropertyCard({ property, reviews, hideComments = false }: Proper
         </div>
 
         <div className="mb-8">
-          <p className="text-muted-foreground leading-relaxed">{property.description}</p>
+          <p className="text-muted-foreground leading-relaxed" style={{ whiteSpace: "pre-line" }}>{property.description ?? ""}</p>
           <div className="flex flex-wrap gap-2 mt-4">
             {property.features.map(f => (
               <span key={f} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium">
