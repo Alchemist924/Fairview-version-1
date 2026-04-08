@@ -13,6 +13,8 @@ import FAQs from "./pages/FAQs";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import NotFound from "./pages/not-found";
+import AdminPanel from "./pages/admin/AdminPanel";
+import PropertyForm from "./pages/admin/PropertyForm";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +80,11 @@ function Router() {
       <Route path="/faqs" component={FAQs} />
       <Route path="/about" component={About} />
       <Route path="/login" component={Login} />
+
+      {/* Admin panel */}
+      <Route path="/admin-panel" component={AdminPanel} />
+      <Route path="/admin-panel/new" component={PropertyForm} />
+      <Route path="/admin-panel/edit/:slug" component={PropertyForm} />
 
       <Route component={NotFound} />
     </Switch>

@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { Layout } from "@/components/layout/Layout";
 import { loadPropertiesFromCMS } from "@/lib/cms-loader";
-import { MapPin, Maximize, ArrowLeft, Tag, Home } from "lucide-react";
+import { fetchPropertyBySlug } from "@/lib/supabase-properties";
+import { MapPin, Maximize, ArrowLeft, Tag, Home, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CommentSection } from "@/components/CommentSection";
@@ -38,13 +39,33 @@ const LISTING_TYPE_COLOURS: Record<string, string> = {
 
 export default function PropertyDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const [property, setProperty] = useState<ReturnType<typeof loadPropertiesFromCMS>[0] | null | undefined>(undefined);
 
-  const property = useMemo(() => {
-    const all = loadPropertiesFromCMS();
-    return all.find((p) => p.slug === slug) ?? null;
+  useEffect(() => {
+    if (!slug) { setProperty(null); return; }
+    fetchPropertyBySlug(slug)
+      .then((p) => {
+        if (p) { setProperty(p); return; }
+        const local = loadPropertiesFromCMS().find((x) => x.slug === slug) ?? null;
+        setProperty(local);
+      })
+      .catch(() => {
+        const local = loadPropertiesFromCMS().find((x) => x.slug === slug) ?? null;
+        setProperty(local);
+      });
   }, [slug]);
 
-  if (!property) {
+  if (property === undefined) {
+    return (
+      <Layout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
+
+  if (property === null) {
     return (
       <Layout>
         <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6 px-4">

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { loadPropertiesFromCMS } from "@/lib/cms-loader";
+import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
 import type { Property, PropertyCategory, ListingType } from "@/lib/mock-data";
 
 const PAGE_SIZE = 6;
@@ -29,11 +30,18 @@ export default function PropertyListingPage({
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    // loadPropertiesFromCMS is synchronous (import.meta.glob eager)
-    // but wrapped in useEffect so state updates work correctly
-    const props = loadPropertiesFromCMS();
-    setAllProperties(props);
-    setLoading(false);
+    fetchPropertiesFromSupabase()
+      .then((props) => {
+        if (props.length > 0) {
+          setAllProperties(props);
+        } else {
+          setAllProperties(loadPropertiesFromCMS());
+        }
+      })
+      .catch(() => {
+        setAllProperties(loadPropertiesFromCMS());
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   // Reset to first page whenever filters or search changes
