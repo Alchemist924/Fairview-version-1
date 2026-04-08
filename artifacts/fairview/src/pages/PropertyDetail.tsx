@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { Layout } from "@/components/layout/Layout";
-import { loadPropertiesFromCMS } from "@/lib/cms-loader";
 import { fetchPropertyBySlug } from "@/lib/supabase-properties";
+import type { Property } from "@/lib/mock-data";
 import { MapPin, Maximize, ArrowLeft, Tag, Home, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -39,20 +39,13 @@ const LISTING_TYPE_COLOURS: Record<string, string> = {
 
 export default function PropertyDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const [property, setProperty] = useState<ReturnType<typeof loadPropertiesFromCMS>[0] | null | undefined>(undefined);
+  const [property, setProperty] = useState<Property | null | undefined>(undefined);
 
   useEffect(() => {
     if (!slug) { setProperty(null); return; }
     fetchPropertyBySlug(slug)
-      .then((p) => {
-        if (p) { setProperty(p); return; }
-        const local = loadPropertiesFromCMS().find((x) => x.slug === slug) ?? null;
-        setProperty(local);
-      })
-      .catch(() => {
-        const local = loadPropertiesFromCMS().find((x) => x.slug === slug) ?? null;
-        setProperty(local);
-      });
+      .then((p) => setProperty(p ?? null))
+      .catch(() => setProperty(null));
   }, [slug]);
 
   if (property === undefined) {
@@ -88,17 +81,10 @@ export default function PropertyDetail() {
     );
   }
 
-  console.log("[PropertyDetail]", property.slug, {
-    mainImage: property.mainImage,
-    gallery: property.gallery,
-    videoUrl: property.videoUrl,
-  });
-
   const embedUrl = getEmbedUrl(property.videoUrl);
 
   return (
     <Layout>
-      {/* Back navigation */}
       <div className="bg-gray-50 border-b py-4">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
@@ -122,7 +108,6 @@ export default function PropertyDetail() {
               className="w-full h-full object-cover"
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; }}
             />
-            {/* Price badge */}
             <div className="absolute top-4 left-4 bg-accent text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">
               {property.price}
             </div>
@@ -199,7 +184,7 @@ export default function PropertyDetail() {
             {property.description && (
               <div className="mb-8">
                 <h2 className="text-lg font-display font-bold text-primary mb-3">About this property</h2>
-                <p className="text-muted-foreground leading-relaxed" style={{ whiteSpace: "pre-line" }}>{property.description ?? ""}</p>
+                <p className="text-muted-foreground leading-relaxed" style={{ whiteSpace: "pre-line" }}>{property.description}</p>
               </div>
             )}
 

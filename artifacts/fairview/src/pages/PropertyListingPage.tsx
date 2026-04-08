@@ -5,7 +5,6 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { loadPropertiesFromCMS } from "@/lib/cms-loader";
 import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
 import type { Property, PropertyCategory, ListingType } from "@/lib/mock-data";
 
@@ -26,25 +25,21 @@ export default function PropertyListingPage({
 }: ListingPageProps) {
   const [allProperties, setAllProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     fetchPropertiesFromSupabase()
       .then((props) => {
-        if (props.length > 0) {
-          setAllProperties(props);
-        } else {
-          setAllProperties(loadPropertiesFromCMS());
-        }
+        setAllProperties(props);
       })
-      .catch(() => {
-        setAllProperties(loadPropertiesFromCMS());
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : "Failed to load properties.");
       })
       .finally(() => setLoading(false));
   }, []);
 
-  // Reset to first page whenever filters or search changes
   useEffect(() => {
     setPage(1);
   }, [search, filterCategory, filterListingType]);
@@ -91,6 +86,11 @@ export default function PropertyListingPage({
           <div className="flex justify-center items-center py-32">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
+        ) : error ? (
+          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-red-200">
+            <h3 className="text-xl font-bold text-red-400">Could not load properties.</h3>
+            <p className="text-sm text-muted-foreground mt-2">{error}</p>
+          </div>
         ) : paginated.length > 0 ? (
           <>
             <div className="space-y-16">
@@ -104,7 +104,6 @@ export default function PropertyListingPage({
               ))}
             </div>
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className="mt-16 flex items-center justify-center gap-4">
                 <Button

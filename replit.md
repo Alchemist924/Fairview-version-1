@@ -10,91 +10,99 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Node.js version**: 24
 - **Package manager**: pnpm
 - **TypeScript version**: 5.9
-- **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
-- **Validation**: Zod (`zod/v4`), `drizzle-zod`
-- **API codegen**: Orval (from OpenAPI spec)
-- **Build**: esbuild (CJS bundle)
-- **Auth**: Session-based (express-session + bcryptjs)
+- **Frontend**: React 19 + Vite + Tailwind CSS + Shadcn UI
+- **Routing**: Wouter
+- **Backend (unused)**: Express 5 (API server exists but frontend does not call it)
+- **Database / Auth / Storage**: Supabase (all live data)
 
 ## Structure
 
 ```text
 artifacts-monorepo/
-├── artifacts/              # Deployable applications
-│   ├── api-server/         # Express API server
+├── artifacts/
+│   ├── api-server/         # Express API server (not used by frontend)
 │   └── fairview/           # Fairview Realty website (React + Vite)
 ├── lib/                    # Shared libraries
-│   ├── api-spec/           # OpenAPI spec + Orval codegen config
-│   ├── api-client-react/   # Generated React Query hooks
-│   ├── api-zod/            # Generated Zod schemas from OpenAPI
-│   └── db/                 # Drizzle ORM schema + DB connection
-├── scripts/                # Utility scripts
+│   ├── api-spec/
+│   ├── api-client-react/
+│   ├── api-zod/
+│   └── db/
 ├── pnpm-workspace.yaml
 ├── tsconfig.base.json
-├── tsconfig.json
 └── package.json
 ```
 
 ## Fairview Realty Website
 
-A 10-page Nigerian real estate website for Fairview Realty, serving property owners and buyers/renters.
+Nigerian real estate web app for the Ile-Ife region. Deployed on Netlify (frontend). All data is managed via Supabase.
+
+### Architecture
+
+- **Frontend** → Netlify (`ifeproperties.space`)
+- **Auth** → Supabase Auth (`supabase.auth.signInWithPassword`, `signUp`)
+- **Properties** → Supabase `properties` table
+- **Comments** → Supabase `comments` table + `profiles` table
+- **Image storage** → Supabase Storage (`property-images` bucket, Public)
+- **Admin panel** → `/admin-panel` (React, writes directly to Supabase)
+- **Decap CMS** → Fully removed
+
+### Data Flow
+
+All property data is loaded from Supabase (`properties` table). There is no local JSON fallback. The admin panel at `/admin-panel` is the sole content management interface.
+
+### Supabase Tables
+
+- `properties` — slug, title, price, location, size, category, listing_type, main_image, gallery[], video_url, description, features[], reviews jsonb, created_at
+- `comments` — id, property_id, user_id, text, parent_id, created_at
+- `profiles` — id (= auth.uid), username, created_at
+
+### Supabase Storage
+
+- Bucket: `property-images` (Public) — stores uploaded property images
 
 ### Pages
 
-1. **Landing** (`/`) - Hero with Nigerian cityscape, CTA buttons, How It Works, Testimonials carousel, About Us with CAC image
-2. **Property Owners** (`/property-owners`) - Listing steps, WhatsApp pop-up form
-3. **Buyers/Renters** (`/buyers-renters`) - Steps guide, category navigation cards
-4. **Lands for Sale** (`/lands-for-sale`) - Search + 3 property cards with video, gallery, comments, WhatsApp CTAs
-5. **Properties for Sale** (`/properties-for-sale`) - Same layout as Lands
-6. **Apartments for Rent** (`/apartments-for-rent`) - 1 property card + tenant reviews
-7. **Shops for Lease** (`/shops-for-lease`) - 1 property card + tenant reviews
-8. **FAQs** (`/faqs`) - Accordion FAQs for owners, buyers, general
-9. **About Fairview** (`/about`) - Story, Why Fairview, Contact + Google Maps (Ile-Ife)
-10. **Login/Register** (`/login`) - Auth toggle, session-based
+1. `/` — Home / Landing
+2. `/property-owners` — For property owners
+3. `/buyers-renters` — For buyers and renters
+4. `/lands-for-sale` — Land listings (filterCategory=land, filterListingType=sale)
+5. `/properties-for-sale` — Property listings (filterListingType=sale)
+6. `/apartments-for-rent` — Apartment listings (filterCategory=apartment, filterListingType=rent)
+7. `/shops-for-lease` — Shop listings (filterCategory=shop, filterListingType=lease)
+8. `/property/:slug` — Property detail (images, gallery, video, comments)
+9. `/faqs` — FAQs
+10. `/about` — About Fairview
+11. `/login` — Login / Register (Supabase Auth)
+12. `/admin-panel` — Admin dashboard (list, delete properties)
+13. `/admin-panel/new` — Create property form
+14. `/admin-panel/edit/:slug` — Edit property form
 
-### Key Features
+### Admin Access
 
-- WhatsApp integration for inspection bookings (pre-filled messages)
-- WhatsApp-linked property listing form (Property Owners)
-- Session-based auth (username + password)
-- Database-backed comments (requires login)
-- Property search by keyword/location/price
-- Testimonials carousel
-- CAC registration image
-- Google Maps embed (Parakin, Ile-Ife, Osun)
+- Protected by `VITE_ADMIN_EMAIL` environment variable (set on Netlify)
+- Only the matching email gets admin access
+- Admin can create, edit, delete properties and upload images
 
-### WhatsApp Number
-wa.me/2348000000000 (placeholder - update as needed)
+### Key Files
 
-### Database Tables
-- `users` - id, username, password_hash, created_at
-- `comments` - id, property_id, user_id, text, created_at
+- `src/lib/supabase.ts` — Supabase client
+- `src/lib/supabase-properties.ts` — All Supabase CRUD for properties + image upload
+- `src/lib/mock-data.ts` — TypeScript types (Property, PropertyCategory, ListingType, Review)
+- `src/pages/admin/AdminPanel.tsx` — Admin dashboard
+- `src/pages/admin/PropertyForm.tsx` — Create/edit property form
+- `src/pages/PropertyListingPage.tsx` — Shared listing page (filtered by category/type)
+- `src/pages/PropertyDetail.tsx` — Single property detail page
+- `src/components/CommentSection.tsx` — Comments (Supabase)
+- `src/hooks/use-auth.tsx` — Auth state (Supabase)
 
-### API Endpoints
-- `GET /api/healthz`
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `POST /api/auth/logout`
-- `GET /api/auth/me`
-- `GET /api/comments/:propertyId`
-- `POST /api/comments/:propertyId`
+### Environment Variables (Netlify)
 
-## TypeScript & Composite Projects
+- `VITE_SUPABASE_URL` — Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` — Supabase anon key
+- `VITE_ADMIN_EMAIL` — Email address with admin panel access
 
-Every package extends `tsconfig.base.json` which sets `composite: true`. The root `tsconfig.json` lists all packages as project references.
+### GitHub / Deployment
 
-## Root Scripts
-
-- `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
-- `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
-
-## Key Packages
-
-### `artifacts/api-server` (`@workspace/api-server`)
-
-Express 5 API server. Routes: health, auth, comments.
-
-### `artifacts/fairview` (`@workspace/fairview`)
-
-React + Vite web app. Uses wouter for routing, TanStack React Query for data fetching, Framer Motion for animations, Embla Carousel for testimonials, Shadcn UI components.
+- GitHub repo: `Alchemist924/Fairview-version-1`, branch: `master`
+- Deployed on Netlify with continuous deployment from master
+- `public/_redirects` — SPA fallback for wouter routing
