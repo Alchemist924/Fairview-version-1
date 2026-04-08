@@ -1,6 +1,10 @@
 backend:
   name: git-gateway
   branch: master
+  site_domain: ifeproperties.space
+
+site_url: https://ifeproperties.space
+display_url: https://ifeproperties.space
 
 media_folder: "artifacts/fairview/public/images/uploads"
 public_folder: "/images/uploads"
