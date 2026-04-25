@@ -133,6 +133,7 @@ function ListPropertyFlow({ onClose }: { onClose: () => void }) {
       <div className="mb-6">
         <h2 className="text-2xl font-display font-bold text-primary">List your property</h2>
         <p className="text-sm text-gray-500 mt-1">Reach serious buyers and the right tenants</p>
+        <p className="text-xs text-gray-400 mt-2">Serious properties only — incomplete submissions may not be approved</p>
       </div>
 
       <ProgressBar step={step} />
@@ -311,10 +312,10 @@ export default function PropertyOwners() {
       {/* Intro */}
       <section className="bg-primary text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">Put your property in front of the right people</h1>
+          <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">Have a property in Ife? Get serious tenants or buyers faster</h1>
           <p className="text-lg md:text-xl text-primary-foreground/80 leading-relaxed">
-            Find serious buyers or the right tenants — smooth and straightforward. <br className="hidden md:block" />
-            With Fairview, getting your property seen and secured is simple, fast and handled for you.
+            List your property and get it seen by the right audience locally and abroad. <br className="hidden md:block" />
+            No stress, no chasing agents.
           </p>
         </div>
       </section>
@@ -338,9 +339,9 @@ export default function PropertyOwners() {
             <h2 className="text-3xl font-display font-bold mb-8 text-primary">How it works</h2>
             <div className="space-y-6 mb-10">
               {[
-                { title: "Add your property", desc: "Click \"Add your Property\" below to enter basic details and choose a convenient inspection time." },
-                { title: "We capture your property", desc: "Our team visits to inspect, record and prepare your property for listing." },
-                { title: "Verify & get listed", desc: "Send a photo of your ownership documents to verify your property, and we begin marketing to secure serious buyers or the right tenants." },
+                { title: "Submit your property details", desc: "Fill in your property information quickly and choose how you'd like us to proceed." },
+                { title: "We help you capture it", desc: "If needed, our team can assist with photos and presentation to make your property more attractive to buyers/renters." },
+                { title: "Get verified and promoted", desc: "We review your submission, verify details, and promote your property to serious buyers and tenants." },
               ].map((step, i) => (
                 <div key={i} className="flex gap-4 items-start bg-white p-4 rounded-xl shadow-sm border border-gray-50">
                   <div className="bg-accent/10 px-3 py-2 rounded-full mt-1 shrink-0">
@@ -359,8 +360,11 @@ export default function PropertyOwners() {
               onClick={() => setIsOpen(true)}
               className="w-full sm:w-auto px-8 py-6 text-lg rounded-xl shadow-xl shadow-primary/20"
             >
-              Add Your Property Now
+              List Your Property Now
             </Button>
+            <p className="text-sm text-gray-500 mt-4">
+              We accept a limited number of new listings weekly to ensure quality service.
+            </p>
           </div>
         </div>
       </section>
@@ -369,12 +373,13 @@ export default function PropertyOwners() {
       <section className="bg-gray-50 py-20">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h3 className="text-3xl font-display font-bold text-primary mb-4">Why Property Owners choose Fairview</h3>
-          <p className="text-gray-600 mb-8 text-lg">We handle the work so you can:</p>
+          <p className="text-gray-600 mb-8 text-lg">We help property owners get results faster:</p>
           <div className="space-y-4 text-left max-w-xl mx-auto">
             {[
-              "Get your property marketed across multiple platforms — no added fees.",
-              "Request updates or changes anytime.",
-              "Enjoy reliable service, faster results and wider reach.",
+              "Your property is promoted to targeted audiences in Nigeria and abroad",
+              "No hidden fees — you stay in control",
+              "Reach serious buyers and tenants, not just inquiries",
+              "Fast listing and simple process",
             ].map((point, i) => (
               <div key={i} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
                 <span className="text-accent font-bold text-lg shrink-0">→</span>
