@@ -1,0 +1,204 @@
+-- ============================================================
+-- 1. USER PROFILES TABLE
+-- ============================================================
+create table profiles (
+  id uuid primary key references auth.users(id),
+  username text unique
+);
+
+
+-- ============================================================
+-- 2. LISTINGS PROPERTIES TABLE
+-- ============================================================
+create table if not exists properties (
+  id uuid default gen_random_uuid() primary key,
+  slug text not null unique,
+  title text not null,
+  price text not null,
+  location text not null,
+  size text not null,
+  category text not null,
+  listing_type text not null,
+  main_image text not null default '',
+  gallery_text[] not null default '{}',
+  video_url text not null default '',
+  description text not null default '',
+  features text[] not null default '{}',
+  reviews jsonb not null default '[]',
+  created_at timestamptz default now() not null
+);
+alter table properties enable row level security;
+create policy "Public read" on properties for select using (true);
+create policy "Auth write" on properties for all using (auth.role() = 'authenticated');
+
+
+-- ============================================================
+-- 3. COMMENTS AND REPLIES TABLE
+-- ============================================================
+create table comments (
+  id bigserial primary key,
+  property_id text not null,
+  user_id uuid not null references auth.users(id),
+  username text not null,
+  text text not null,
+  parent_id bigint references comments(id),
+  created_at timestamptz default now()
+);
+
+
+-- ============================================================
+-- 4. PROFILES ROW-LEVEL ACCESS CONTROLS
+-- ============================================================
+ALTER TABLE "public"."profiles" ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX IF NOT EXISTS "idx_profiles_id" ON "public"."profiles" ("id");
+
+CREATE POLICY "profiles_select_own" ON "public"."profiles"
+  FOR SELECT
+    TO authenticated
+      USING ( (SELECT auth.uid()) = id );
+
+CREATE POLICY "profiles_insert_own" ON "public"."profiles"
+  FOR INSERT
+    TO authenticated
+      WITH CHECK ( (SELECT auth.uid()) = id );
+
+CREATE POLICY "profiles_update_own" ON "public"."profiles"
+  FOR UPDATE
+    TO authenticated
+      USING ( (SELECT auth.uid()) = id )
+      WITH CHECK ( (SELECT auth.uid()) = id );
+
+CREATE POLICY "profiles_delete_own" ON "public"."profiles"
+  FOR DELETE
+    TO authenticated
+      USING ( (SELECT auth.uid()) = id );
+
+
+-- ============================================================
+-- 5. COMMENTS ROW-LEVEL ACCESS CONTROLS
+-- ============================================================
+ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "comments_public_read"
+  ON public.comments
+  FOR SELECT
+  TO anon, authenticated
+  USING (true);
+
+CREATE POLICY "comments_insert_own"
+  ON public.comments
+  FOR INSERT
+  TO authenticated
+  WITH CHECK ( (SELECT auth.uid()) = author_id );
+
+CREATE POLICY "comments_update_own"
+  ON public.comments
+  FOR UPDATE
+  TO authenticated
+  USING ( (SELECT auth.uid()) = author_id )
+  WITH CHECK ( (SELECT auth.uid()) = author_id );
+
+CREATE POLICY "comments_delete_own"
+  ON public.comments
+  FOR DELETE
+  TO authenticated
+  USING ( (SELECT auth.uid()) = author_id );
+
+
+-- ============================================================
+-- 6. TELEGRAM NOTIFICATION (pg_net)
+-- ============================================================
+CREATE EXTENSION IF NOT EXISTS pg_net;
+
+CREATE OR REPLACE FUNCTION notify_telegram()
+RETURNS trigger AS $$
+DECLARE
+  payload json;
+BEGIN
+  payload = json_build_object(
+    'record', row_to_json(NEW)
+  );
+
+  PERFORM
+    net.http_post(
+      url := 'https://fucljiyczkpajddyykmd.supabase.co/functions/v1/send-telegram-notification',
+      headers := '{"Content-Type": "application/json"}'::jsonb,
+      body := payload::text
+    );
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER telegram_notification_trigger
+AFTER INSERT ON public.comments
+FOR EACH ROW
+EXECUTE FUNCTION notify_telegram();
+
+
+-- ============================================================
+-- 7. COMMENT MODERATION TRIGGER
+-- ============================================================
+create or replace function check_comment_rules()
+returns trigger as $$
+declare
+  recent_count int;
+  duplicate_count int;
+begin
+
+  -- 1. RATE LIMIT (max 3 comments per 30 seconds)
+  select count(*) into recent_count
+  from comments
+  where user_id = new.user_id
+    and created_at > now() - interval '30 seconds';
+
+  if recent_count >= 3 then
+    raise exception 'Too many comments. Please wait 30 seconds.';
+  end if;
+
+  -- 2. DUPLICATE DETECTION (allow after 1 day)
+  select count(*) into duplicate_count
+  from comments
+  where user_id = new.user_id
+    and text = new.text
+    and created_at > now() - interval '1 day';
+
+  if duplicate_count > 0 then
+    raise exception 'Duplicate comment detected. Try again later.';
+  end if;
+
+  -- 3. LINK FILTERING (optional)
+  if new.text ~* '(http|www\.)[\.com|\.ng]' then
+    raise exception 'Links are not allowed in comments.';
+  end if;
+
+  return new;
+end;
+$$ language plpgsql;
+
+create trigger comment_moderation_trigger
+before insert on comments
+for each row
+execute function check_comment_rules();
+
+
+-- ============================================================
+-- 8. REMOVE TELEGRAM NOTIFICATION TRIGGER
+-- ============================================================
+DROP TRIGGER telegram_notification_trigger ON public.comments;
+DROP FUNCTION IF EXISTS notify_telegram();
+
+
+-- ============================================================
+-- 9. LIST TRIGGERS ON COMMENTS
+-- ============================================================
+SELECT tgname
+FROM pg_trigger
+WHERE tgrelid = 'public.comments'::regclass;
+
+
+-- ============================================================
+-- 10. LIST ALL PROFILES
+-- ============================================================
+select * from profiles;

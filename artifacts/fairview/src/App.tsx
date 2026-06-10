@@ -81,6 +81,11 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/login" component={Login} />
 
+      {/* Admin shortcut redirect */}
+      <Route path="/admin">
+        {() => { window.location.replace("/admin-panel"); return null; }}
+      </Route>
+
       {/* Admin panel */}
       <Route path="/admin-panel" component={AdminPanel} />
       <Route path="/admin-panel/new" component={PropertyForm} />
