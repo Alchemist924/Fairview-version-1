@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { Send, CornerDownRight, Loader2 } from "lucide-react";
+import { Send, CornerDownRight, Loader2, Trash2 } from "lucide-react";
 import { supabase, type Comment } from "@/lib/supabase";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL as string | undefined;
 
 async function fetchUsernameFromProfiles(userId: string): Promise<string> {
   const { data, error } = await supabase
@@ -22,9 +24,19 @@ async function fetchUsernameFromProfiles(userId: string): Promise<string> {
   return data.username as string;
 }
 
-function CommentBubble({ comment, isReply = false }: { comment: Comment; isReply?: boolean }) {
+function CommentBubble({
+  comment,
+  isReply = false,
+  isAdmin = false,
+  onDelete,
+}: {
+  comment: Comment;
+  isReply?: boolean;
+  isAdmin?: boolean;
+  onDelete?: (id: string) => void;
+}) {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 group">
       <div
         className={`${isReply ? "w-8 h-8" : "w-10 h-10"} rounded-full bg-primary/10 flex items-center justify-center shrink-0`}
       >
@@ -32,14 +44,26 @@ function CommentBubble({ comment, isReply = false }: { comment: Comment; isReply
           {comment.username.charAt(0).toUpperCase()}
         </span>
       </div>
-      <div>
-        <div className="flex items-baseline gap-2">
-          <span className={`font-semibold ${isReply ? "text-xs" : "text-sm"}`}>
-            {comment.username}
-          </span>
-          <span className="text-xs text-muted-foreground">
-            {format(new Date(comment.created_at), "MMM d, yyyy")}
-          </span>
+      <div className="flex-1">
+        <div className="flex items-baseline justify-between gap-2">
+          <div className="flex items-baseline gap-2">
+            <span className={`font-semibold ${isReply ? "text-xs" : "text-sm"}`}>
+              {comment.username}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {format(new Date(comment.created_at), "MMM d, yyyy")}
+            </span>
+          </div>
+          {isAdmin && onDelete && (
+            <button
+              type="button"
+              onClick={() => onDelete(comment.id)}
+              className="opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-600 p-1 rounded shrink-0"
+              title="Delete comment"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
         <p className={`${isReply ? "text-xs" : "text-sm"} text-gray-700 mt-1`}>{comment.text}</p>
       </div>
@@ -51,6 +75,7 @@ interface CommentItemProps {
   comment: Comment;
   replies: Comment[];
   user: { id: string } | null;
+  isAdmin: boolean;
   replyingToId: string | null;
   replyText: string;
   isSubmittingReply: boolean;
@@ -58,12 +83,14 @@ interface CommentItemProps {
   onReplyTextChange: (text: string) => void;
   onReplyCancel: () => void;
   onReplySubmit: (e: React.FormEvent, parentId: string) => void;
+  onDelete: (id: string) => void;
 }
 
 function CommentItem({
   comment,
   replies,
   user,
+  isAdmin,
   replyingToId,
   replyText,
   isSubmittingReply,
@@ -71,19 +98,20 @@ function CommentItem({
   onReplyTextChange,
   onReplyCancel,
   onReplySubmit,
+  onDelete,
 }: CommentItemProps) {
   const isReplying = replyingToId === comment.id;
 
   return (
     <div>
-      <CommentBubble comment={comment} />
+      <CommentBubble comment={comment} isAdmin={isAdmin} onDelete={onDelete} />
 
       <div className="ml-14 mt-3 space-y-3">
         {replies.map((reply) => (
           <div key={reply.id} className="flex gap-2 items-start">
             <CornerDownRight className="w-3 h-3 text-muted-foreground mt-2 shrink-0" />
             <div className="flex-1">
-              <CommentBubble comment={reply} isReply />
+              <CommentBubble comment={reply} isReply isAdmin={isAdmin} onDelete={onDelete} />
             </div>
           </div>
         ))}
@@ -146,6 +174,7 @@ export function CommentSection({ propertyId }: CommentSectionProps) {
   const [isSubmittingReply, setIsSubmittingReply] = useState(false);
   const [, setLocation] = useLocation();
   const { user } = useAuth();
+  const isAdmin = !!(ADMIN_EMAIL && user?.email === ADMIN_EMAIL);
 
   const loadComments = useCallback(async () => {
     setLoading(true);
@@ -252,6 +281,16 @@ export function CommentSection({ propertyId }: CommentSectionProps) {
     }
   };
 
+  const handleDeleteComment = async (id: string) => {
+    const { error } = await supabase.from("comments").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Failed to delete comment", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Comment deleted" });
+      await loadComments();
+    }
+  };
+
   const mainComments = comments.filter((c) => c.parent_id === null);
   const replies = comments.filter((c) => c.parent_id !== null);
 
@@ -277,6 +316,7 @@ export function CommentSection({ propertyId }: CommentSectionProps) {
                 comment={comment}
                 replies={replies.filter((r) => r.parent_id === comment.id)}
                 user={user}
+                isAdmin={isAdmin}
                 replyingToId={replyingToId}
                 replyText={replyText}
                 isSubmittingReply={isSubmittingReply}
@@ -284,6 +324,7 @@ export function CommentSection({ propertyId }: CommentSectionProps) {
                 onReplyTextChange={setReplyText}
                 onReplyCancel={() => { setReplyingToId(null); setReplyText(""); }}
                 onReplySubmit={submitReply}
+                onDelete={handleDeleteComment}
               />
             ))}
           </div>
