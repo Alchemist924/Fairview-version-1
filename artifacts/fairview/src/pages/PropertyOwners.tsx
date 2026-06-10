@@ -128,27 +128,29 @@ function ListPropertyFlow({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="px-1 py-2">
-      {/* Header */}
-      <div className="mb-6">
-        <h2 className="text-2xl font-display font-bold text-primary">List your property</h2>
-        <p className="text-sm text-gray-500 mt-1">Reach serious buyers and the right tenants</p>
-        <p className="text-xs text-gray-400 mt-2">Serious properties only — incomplete submissions may not be approved</p>
-      </div>
+    <div className="flex flex-col h-full">
+      {/* Scrollable area */}
+      <div className="flex-1 overflow-y-auto px-8 pt-8 pb-2">
+        {/* Header */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-display font-bold text-primary">List your property</h2>
+          <p className="text-sm text-gray-500 mt-1">Reach serious buyers and the right tenants</p>
+          <p className="text-xs text-gray-400 mt-2">Serious properties only — incomplete submissions may not be approved</p>
+        </div>
 
-      <ProgressBar step={step} />
+        <ProgressBar step={step} />
 
-      <div className="overflow-hidden min-h-[280px]">
-        <AnimatePresence mode="wait" custom={dir}>
-          <motion.div
-            key={step}
-            custom={dir}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.28, ease: "easeInOut" }}
-          >
+        <div className="overflow-hidden min-h-[200px]">
+          <AnimatePresence mode="wait" custom={dir}>
+            <motion.div
+              key={step}
+              custom={dir}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.28, ease: "easeInOut" }}
+            >
             {/* STEP 1 */}
             {step === 1 && (
               <div className="space-y-4">
@@ -267,12 +269,13 @@ function ListPropertyFlow({ onClose }: { onClose: () => void }) {
                 />
               </div>
             )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>{/* end scrollable area */}
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center mt-8 pt-4 border-t border-gray-100">
+      {/* Navigation — pinned at bottom */}
+      <div className="flex justify-between items-center shrink-0 px-8 pb-6 pt-4 border-t border-gray-100">
         <button
           type="button"
           onClick={() => step > 1 ? go(step - 1) : onClose()}
@@ -391,7 +394,7 @@ export default function PropertyOwners() {
       </section>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[480px] rounded-3xl p-8">
+        <DialogContent className="sm:max-w-[480px] rounded-3xl p-0 max-h-[90vh] flex flex-col overflow-hidden">
           <ListPropertyFlow onClose={() => setIsOpen(false)} />
         </DialogContent>
       </Dialog>
