@@ -48,8 +48,8 @@ function Router() {
           <PropertyListingPage
             title="Properties for Sale"
             intro={<>Find your next home or investment with ease.<br />Browse verified residential and commercial properties in Ife, ready for transfer.<br />Need something specific?<br />Tap the WhatsApp icon below – we'll help you explore the right options.</>}
+            filterCategory="property"
             filterListingType="sale"
-            excludeCategory="land"
           />
         )}
       </Route>
