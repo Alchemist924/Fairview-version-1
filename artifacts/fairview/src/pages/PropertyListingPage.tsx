@@ -15,6 +15,7 @@ interface ListingPageProps {
   intro: ReactNode;
   filterCategory?: PropertyCategory;
   filterListingType?: ListingType;
+  excludeCategory?: PropertyCategory;
 }
 
 export default function PropertyListingPage({
@@ -22,6 +23,7 @@ export default function PropertyListingPage({
   intro,
   filterCategory,
   filterListingType,
+  excludeCategory,
 }: ListingPageProps) {
   const [allProperties, setAllProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,11 +44,12 @@ export default function PropertyListingPage({
 
   useEffect(() => {
     setPage(1);
-  }, [search, filterCategory, filterListingType]);
+  }, [search, filterCategory, filterListingType, excludeCategory]);
 
   const filtered = useMemo(() => {
     return allProperties
       .filter((p) => !filterCategory || p.category === filterCategory)
+      .filter((p) => !excludeCategory || p.category !== excludeCategory)
       .filter((p) => !filterListingType || p.listingType === filterListingType)
       .filter((p) => {
         if (!search.trim()) return true;
