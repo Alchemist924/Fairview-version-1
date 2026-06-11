@@ -128,9 +128,9 @@ function ListPropertyFlow({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 min-h-0">
       {/* Scrollable area */}
-      <div className="flex-1 overflow-y-auto px-8 pt-8 pb-2">
+      <div className="flex-1 overflow-y-auto min-h-0 px-8 pt-8 pb-2">
         {/* Header */}
         <div className="mb-6">
           <h2 className="text-2xl font-display font-bold text-primary">List your property</h2>
@@ -394,7 +394,7 @@ export default function PropertyOwners() {
       </section>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[480px] rounded-3xl p-0 max-h-[90vh] flex flex-col overflow-hidden">
+        <DialogContent className="sm:max-w-[480px] rounded-3xl p-0 max-h-[85dvh] flex flex-col overflow-hidden">
           <ListPropertyFlow onClose={() => setIsOpen(false)} />
         </DialogContent>
       </Dialog>
