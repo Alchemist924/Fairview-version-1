@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { ReactNode } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { PropertyCard } from "@/components/PropertyCard";
+import { EmptyListingState } from "@/components/EmptyListingState";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
@@ -46,21 +47,23 @@ export default function PropertyListingPage({
     setPage(1);
   }, [search, filterCategory, filterListingType, excludeCategory]);
 
-  const filtered = useMemo(() => {
+  const categoryProperties = useMemo(() => {
     return allProperties
       .filter((p) => !filterCategory || p.category === filterCategory)
       .filter((p) => !excludeCategory || p.category !== excludeCategory)
-      .filter((p) => !filterListingType || p.listingType === filterListingType)
-      .filter((p) => {
-        if (!search.trim()) return true;
-        const q = search.toLowerCase();
-        return (
-          p.title.toLowerCase().includes(q) ||
-          p.location.toLowerCase().includes(q) ||
-          p.price.toLowerCase().includes(q)
-        );
-      });
-  }, [allProperties, filterCategory, filterListingType, search]);
+      .filter((p) => !filterListingType || p.listingType === filterListingType);
+  }, [allProperties, filterCategory, filterListingType, excludeCategory]);
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return categoryProperties;
+    const q = search.toLowerCase();
+    return categoryProperties.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.location.toLowerCase().includes(q) ||
+        p.price.toLowerCase().includes(q)
+    );
+  }, [categoryProperties, search]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -94,6 +97,8 @@ export default function PropertyListingPage({
             <h3 className="text-xl font-bold text-red-400">Could not load properties.</h3>
             <p className="text-sm text-muted-foreground mt-2">{error}</p>
           </div>
+        ) : categoryProperties.length === 0 ? (
+          <EmptyListingState />
         ) : paginated.length > 0 ? (
           <>
             <div className="space-y-16">
