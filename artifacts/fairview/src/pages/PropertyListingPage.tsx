@@ -98,7 +98,7 @@ export default function PropertyListingPage({
             <p className="text-sm text-muted-foreground mt-2">{error}</p>
           </div>
         ) : categoryProperties.length === 0 ? (
-          <EmptyListingState />
+          <EmptyListingState categoryTitle={title} />
         ) : paginated.length > 0 ? (
           <>
             <div className="space-y-16">

@@ -1,16 +1,28 @@
 import { Link } from "wouter";
 import { Building2, BellRing, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
 
-export function EmptyListingState() {
-  const [notified, setNotified] = useState(false);
+const WHATSAPP_NUMBER = "2349164069005";
 
-  const handleNotify = () => {
-    setNotified(true);
-    toast({ title: "You'll be notified when listings are added!" });
-  };
+function deriveNoun(title: string): string {
+  const beforeFor = title.split(" for ")[0].trim();
+  if (!beforeFor || beforeFor === title) return title;
+  return beforeFor;
+}
+
+interface EmptyListingStateProps {
+  categoryTitle: string;
+}
+
+export function EmptyListingState({ categoryTitle }: EmptyListingStateProps) {
+  const noun = deriveNoun(categoryTitle);
+
+  const heading = `No ${noun} Available Yet`;
+
+  const whatsappMessage = encodeURIComponent(
+    `Hello Fairview, I'm interested in properties in the ${categoryTitle} category. Please notify me when verified listings become available.`
+  );
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`;
 
   return (
     <div className="flex flex-col items-center justify-center py-24 px-6 bg-white rounded-3xl border border-dashed border-gray-200 text-center">
@@ -19,13 +31,14 @@ export function EmptyListingState() {
       </div>
 
       <h3 className="text-2xl font-display font-bold text-primary mb-3">
-        Listings Coming Soon
+        {heading}
       </h3>
+
       <p className="text-muted-foreground max-w-md mb-2 leading-relaxed">
-        We don't have any properties in this category yet, but we're actively sourcing verified listings in Ile-Ife.
+        We don't have any verified listings in this category yet, but we're actively sourcing verified listings across Ile-Ife.
       </p>
       <p className="text-muted-foreground max-w-md mb-10 leading-relaxed">
-        If you own a property, list it now and get in front of ready buyers and renters.
+        Own a property in this category? List it with Fairview and connect with serious buyers and tenants.
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3">
@@ -36,15 +49,15 @@ export function EmptyListingState() {
           </Button>
         </Link>
 
-        <Button
-          variant="outline"
-          className="rounded-xl h-12 px-6 gap-2 border-gray-300 text-gray-600 hover:bg-gray-50"
-          onClick={handleNotify}
-          disabled={notified}
-        >
-          <BellRing className="w-4 h-4" />
-          {notified ? "We'll notify you!" : "Notify Me"}
-        </Button>
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+          <Button
+            variant="outline"
+            className="rounded-xl h-12 px-6 gap-2 border-gray-300 text-gray-600 hover:bg-gray-50"
+          >
+            <BellRing className="w-4 h-4" />
+            Notify Me
+          </Button>
+        </a>
       </div>
     </div>
   );
