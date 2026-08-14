@@ -1,16 +1,19 @@
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { ArrowRight, Search, Key, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { SearchAutocompleteInput } from "@/components/SearchAutocompleteInput";
+import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
+import type { Property } from "@/lib/mock-data";
 
-const TESTIMONIAL_IMAGES = [
-  { src: "images/review-1.png", alt: "Samuel A. Google Review" },
-  { src: "images/review-2.png", alt: "Tosin M. Google Review" },
-  { src: "images/review-3.png", alt: "Ikechukwu O. Google Review" },
-  { src: "images/review-4.png", alt: "Bola O. Google Review" },
+const WHATSAPP_TESTIMONIALS = [
+  { src: "images/whatsapp-review-1.jpg", alt: "WhatsApp feedback from a Fairview user" },
+  { src: "images/whatsapp-review-2.jpg", alt: "WhatsApp feedback from a Fairview user" },
+  { src: "images/whatsapp-review-3.jpg", alt: "WhatsApp feedback from a Fairview user" },
 ];
 
 const fadeIn = {
@@ -21,6 +24,21 @@ const fadeIn = {
 
 export default function Home() {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })]);
+  const [, setLocation] = useLocation();
+  const [heroSearch, setHeroSearch] = useState("");
+  const [properties, setProperties] = useState<Property[]>([]);
+
+  useEffect(() => {
+    fetchPropertiesFromSupabase()
+      .then(setProperties)
+      .catch(() => {});
+  }, []);
+
+  const handleHeroSearch = (query: string) => {
+    if (query.trim()) {
+      setLocation(`/properties-for-sale?search=${encodeURIComponent(query.trim())}`);
+    }
+  };
 
   return (
     <Layout>
@@ -46,9 +64,22 @@ export default function Home() {
             <p className="text-xl md:text-2xl font-semibold text-white mb-2 leading-snug">
               Own a property in Ile Ife? Let's put it in front of ready clients.
             </p>
-            <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl">
+            <p className="text-lg md:text-xl text-gray-200 mb-6 leading-relaxed max-w-xl">
               In need of a property or space? View trusted listings or get matching ones sent straight to your phone.
             </p>
+
+            <div className="mb-8 max-w-xl">
+              <form onSubmit={(e) => { e.preventDefault(); handleHeroSearch(heroSearch); }}>
+                <SearchAutocompleteInput
+                  value={heroSearch}
+                  onChange={setHeroSearch}
+                  onSearch={handleHeroSearch}
+                  properties={properties}
+                  placeholder="Search location, property type, bedrooms... (e.g. Ipetumodu, 4 bedroom, Fasina)"
+                  className="text-gray-900 shadow-2xl"
+                />
+              </form>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
               <Link href="/buyers-renters">
@@ -173,30 +204,23 @@ export default function Home() {
       {/* TESTIMONIALS */}
       <section className="py-24 bg-primary text-primary-foreground overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl font-display font-bold mb-4">Why Choose Fairview</h2>
-              <p className="text-primary-foreground/80 text-lg">Experiences from property owners and seekers</p>
-            </div>
-            <div className="flex items-center gap-1 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-              <Star className="w-5 h-5 fill-accent text-accent" />
-              <Star className="w-5 h-5 fill-accent text-accent" />
-              <Star className="w-5 h-5 fill-accent text-accent" />
-              <Star className="w-5 h-5 fill-accent text-accent" />
-              <Star className="w-5 h-5 text-accent" />
-              <span className="ml-2 font-bold">4/5 Average</span>
-            </div>
+          <div className="max-w-3xl mb-14 text-center md:text-left">
+            <h2 className="text-4xl font-display font-bold mb-3">Real Feedback From People We've Helped</h2>
+            <p className="text-primary-foreground/80 text-lg md:text-xl font-medium">Reviews from Property owners, buyers and renters</p>
           </div>
 
           <div className="embla" ref={emblaRef}>
-            <div className="embla__container flex items-center">
-              {TESTIMONIAL_IMAGES.map((t, i) => (
-                <div className="embla__slide flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-6" key={i}>
-                  <img
-                    src={`${import.meta.env.BASE_URL}${t.src}`}
-                    alt={t.alt}
-                    className="w-full rounded-2xl shadow-xl object-contain"
-                  />
+            <div className="embla__container flex items-stretch">
+              {WHATSAPP_TESTIMONIALS.map((t, i) => (
+                <div className="embla__slide flex-[0_0_85%] sm:flex-[0_0_70%] md:flex-[0_0_33.333%] pl-4 md:pl-6" key={i}>
+                  <div className="bg-white/5 border border-white/10 rounded-3xl p-3 h-full backdrop-blur-md shadow-2xl hover:border-white/20 transition-all flex flex-col justify-center items-center">
+                    <img
+                      src={`${import.meta.env.BASE_URL}${t.src}`}
+                      alt={t.alt}
+                      loading="lazy"
+                      className="w-full h-auto rounded-2xl object-contain max-h-[480px]"
+                    />
+                  </div>
                 </div>
               ))}
             </div>

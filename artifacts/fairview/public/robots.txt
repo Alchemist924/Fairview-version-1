@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Private, admin, and auth routes
+Disallow: /admin
+Disallow: /admin-panel
+Disallow: /admin-panel/
+Disallow: /login
+Disallow: /api/
+
+Sitemap: https://ifeproperties.space/sitemap.xml

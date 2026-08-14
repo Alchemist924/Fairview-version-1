@@ -1,12 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
 import { ReactNode } from "react";
+import { Link } from "wouter";
 import { Layout } from "@/components/layout/Layout";
 import { PropertyCard } from "@/components/PropertyCard";
 import { EmptyListingState } from "@/components/EmptyListingState";
-import { Input } from "@/components/ui/input";
+import { SearchAutocompleteInput } from "@/components/SearchAutocompleteInput";
 import { Button } from "@/components/ui/button";
-import { Search, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Search, RefreshCw, Landmark, Home, Building2, Store } from "lucide-react";
 import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
+import { searchProperties } from "@/lib/search-engine";
 import type { Property, PropertyCategory, ListingType } from "@/lib/mock-data";
 
 const PAGE_SIZE = 6;
@@ -29,7 +31,16 @@ export default function PropertyListingPage({
   const [allProperties, setAllProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
+
+  // Initialize search from URL search parameters if available
+  const [search, setSearch] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("search") || "";
+    }
+    return "";
+  });
+
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -54,19 +65,19 @@ export default function PropertyListingPage({
       .filter((p) => !filterListingType || p.listingType === filterListingType);
   }, [allProperties, filterCategory, filterListingType, excludeCategory]);
 
-  const filtered = useMemo(() => {
-    if (!search.trim()) return categoryProperties;
-    const q = search.toLowerCase();
-    return categoryProperties.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.location.toLowerCase().includes(q) ||
-        p.price.toLowerCase().includes(q)
-    );
+  // Execute intelligent search engine scoring
+  const searchResult = useMemo(() => {
+    return searchProperties(categoryProperties, search);
   }, [categoryProperties, search]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const activePropertyList = searchResult.exactMatches.length > 0
+    ? searchResult.exactMatches
+    : searchResult.closeMatches;
+
+  const isShowingCloseMatches = searchResult.exactMatches.length === 0 && searchResult.closeMatches.length > 0;
+
+  const totalPages = Math.max(1, Math.ceil(activePropertyList.length / PAGE_SIZE));
+  const paginated = activePropertyList.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <Layout>
@@ -75,13 +86,12 @@ export default function PropertyListingPage({
           <h1 className="text-4xl font-display font-bold text-primary mb-4">{title}</h1>
           <div className="text-lg text-muted-foreground mb-8 max-w-2xl">{intro}</div>
 
-          <div className="relative max-w-xl">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <Input
-              placeholder="Search by location, price, or keyword..."
-              className="pl-12 h-14 rounded-2xl bg-white border-gray-200 shadow-sm text-lg focus-visible:ring-accent"
+          <div className="max-w-2xl">
+            <SearchAutocompleteInput
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={setSearch}
+              properties={allProperties}
+              placeholder="Search by location, bedroom count, type (e.g. Ipetumodu, 4 bedroom, Fasina)"
             />
           </div>
         </div>
@@ -99,8 +109,22 @@ export default function PropertyListingPage({
           </div>
         ) : categoryProperties.length === 0 ? (
           <EmptyListingState categoryTitle={title} />
-        ) : paginated.length > 0 ? (
+        ) : activePropertyList.length > 0 ? (
           <>
+            {isShowingCloseMatches && (
+              <div className="mb-10 p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 flex items-start gap-4">
+                <div className="p-2 rounded-xl bg-amber-100 shrink-0">
+                  <Search className="w-5 h-5 text-amber-700" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-base">No exact matches found for "{search}"</h4>
+                  <p className="text-sm text-amber-800/90 mt-1">
+                    Here are relevant property options in Ile-Ife that closely match your query:
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div className="space-y-16">
               {paginated.map((prop) => (
                 <PropertyCard
@@ -153,12 +177,59 @@ export default function PropertyListingPage({
             )}
 
             <p className="text-center text-sm text-muted-foreground mt-4">
-              Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length} propert{filtered.length === 1 ? "y" : "ies"}
+              Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, activePropertyList.length)} of {activePropertyList.length} propert{activePropertyList.length === 1 ? "y" : "ies"}
             </p>
           </>
         ) : (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
-            <h3 className="text-xl font-bold text-gray-400">No properties found matching your search.</h3>
+          <div className="text-center py-16 px-6 bg-white rounded-3xl border border-dashed border-gray-300 shadow-sm max-w-2xl mx-auto">
+            <div className="w-16 h-16 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Search className="w-8 h-8 opacity-60" />
+            </div>
+            <h3 className="text-2xl font-display font-bold text-gray-800 mb-2">No properties match your search</h3>
+            <p className="text-muted-foreground mb-8">
+              We couldn't find any properties matching <span className="font-semibold text-gray-700">"{search}"</span>.
+            </p>
+
+            <div className="space-y-4">
+              <Button
+                variant="default"
+                onClick={() => setSearch("")}
+                className="bg-primary hover:bg-primary/90 text-white rounded-xl h-12 px-6 gap-2"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Clear Search &amp; View All
+              </Button>
+
+              <div className="pt-6 border-t border-gray-100">
+                <p className="text-xs uppercase tracking-wider font-semibold text-gray-400 mb-4">Explore by Category</p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Link href="/lands-for-sale">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl border border-gray-200 transition-colors cursor-pointer">
+                      <Landmark className="w-4 h-4 text-green-600" />
+                      Lands for Sale
+                    </span>
+                  </Link>
+                  <Link href="/apartments-for-rent">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl border border-gray-200 transition-colors cursor-pointer">
+                      <Home className="w-4 h-4 text-orange-600" />
+                      Apartments for Rent
+                    </span>
+                  </Link>
+                  <Link href="/properties-for-sale">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl border border-gray-200 transition-colors cursor-pointer">
+                      <Building2 className="w-4 h-4 text-blue-600" />
+                      Properties for Sale
+                    </span>
+                  </Link>
+                  <Link href="/shops-for-lease">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl border border-gray-200 transition-colors cursor-pointer">
+                      <Store className="w-4 h-4 text-purple-600" />
+                      Shops for Lease
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -1,6 +1,18 @@
 [build]
   command = "pnpm --filter @workspace/fairview... run build"
   publish = "artifacts/fairview/dist/public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/sitemap"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
 
 [[redirects]]
   from = "/*"
