@@ -68,7 +68,7 @@ export default function About() {
                     <MapPin className="w-6 h-6 text-accent shrink-0" />
                     <div>
                       <h4 className="font-bold text-lg mb-1">Head Office</h4>
-                      <p className="text-primary-foreground/80">No 50 Raymond Adedoyin way,<br/>beside Nitel, Parakin,<br/>Ile Ife, Osun.</p>
+                      <p className="text-primary-foreground/80">Megatron Studios,<br/>No 25 Ede Road, Odo Eran,<br/>Ile-Ife, Osun State, Nigeria</p>
                     </div>
                   </div>
                   
@@ -101,7 +101,7 @@ export default function About() {
               
               <div className="md:col-span-3 h-[400px] md:h-auto min-h-[400px]">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15836.8521798369!2d4.5583!3d7.4735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10382e8d38cb3dc1%3A0xb36cd25f6e80b2d6!2sParakin%2C%20Ile-Ife!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng" 
+                  src="https://maps.google.com/maps?q=Megatron%20Studios%2C%20No%2025%20Ede%20Road%2C%20Odo%20Eran%2C%20Ile-Ife%2C%20Osun%20State%2C%20Nigeria&t=&z=15&ie=UTF8&iwloc=&output=embed" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 

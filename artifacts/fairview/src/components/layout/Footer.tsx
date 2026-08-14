@@ -64,7 +64,7 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-primary-foreground/80">
                 <MapPin className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                <span>No 50 Raymond Adedoyin way, beside Nitel, Parakin, Ile Ife, Osun.</span>
+                <span>Megatron Studios, No 25 Ede Road, Odo Eran, Ile-Ife, Osun State, Nigeria</span>
               </li>
               <li className="flex items-center gap-3 text-primary-foreground/80">
                 <Phone className="w-5 h-5 text-accent shrink-0" />

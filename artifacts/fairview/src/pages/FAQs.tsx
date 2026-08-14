@@ -102,7 +102,7 @@ export default function FAQs() {
           <ul className="list-disc pl-5 mt-2 space-y-1">
             <li>Tap the chat button on your screen.</li>
             <li>Email: fairviewrealtyhub@gmail.com</li>
-            <li>Visit our office: No 50 Raymond Adedoyin way, beside Nitel, Parakin, Ile-Ife, Osun.</li>
+            <li>Visit our office: Megatron Studios, No 25 Ede Road, Odo Eran, Ile-Ife, Osun State, Nigeria</li>
             <li>09164069005</li>
           </ul>
         </>
