@@ -9,6 +9,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { SearchAutocompleteInput } from "@/components/SearchAutocompleteInput";
 import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
 import type { Property } from "@/lib/mock-data";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 const WHATSAPP_TESTIMONIALS = [
   { src: "images/whatsapp-review-1.jpg", alt: "WhatsApp feedback from a Fairview user" },
@@ -35,8 +36,12 @@ export default function Home() {
   }, []);
 
   const handleHeroSearch = (query: string) => {
-    if (query.trim()) {
-      setLocation(`/properties-for-sale?search=${encodeURIComponent(query.trim())}`);
+    const trimmed = query.trim();
+    if (trimmed) {
+      trackMetaEvent("Search", {
+        search_string: trimmed
+      });
+      setLocation(`/properties-for-sale?search=${encodeURIComponent(trimmed)}`);
     }
   };
 

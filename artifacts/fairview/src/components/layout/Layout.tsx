@@ -2,9 +2,13 @@ import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { MessageCircle } from "lucide-react";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 function WhatsAppWidget() {
   const handleClick = () => {
+    trackMetaEvent("Contact", {
+      content_name: "Floating WhatsApp Widget"
+    });
     const message = encodeURIComponent("Hello Fairview! I'd like to make an enquiry.");
     window.open(`https://wa.me/2349164069005?text=${message}`, "_blank");
   };

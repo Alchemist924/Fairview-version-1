@@ -10,6 +10,7 @@ import { ChevronLeft, ChevronRight, Loader2, Search, RefreshCw, Landmark, Home, 
 import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
 import { searchProperties } from "@/lib/search-engine";
 import type { Property, PropertyCategory, ListingType } from "@/lib/mock-data";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 const PAGE_SIZE = 6;
 
@@ -87,13 +88,22 @@ export default function PropertyListingPage({
           <div className="text-lg text-muted-foreground mb-8 max-w-2xl">{intro}</div>
 
           <div className="max-w-2xl">
-            <SearchAutocompleteInput
-              value={search}
-              onChange={setSearch}
-              properties={allProperties}
-              placeholder="Search by location, bedroom count, type (e.g. Ipetumodu, 4 bedroom, Fasina)"
-            />
-          </div>
+             <SearchAutocompleteInput
+               value={search}
+               onChange={setSearch}
+               onSearch={(query) => {
+                 const trimmed = query.trim();
+                 if (trimmed) {
+                   trackMetaEvent("Search", {
+                     search_string: trimmed,
+                     content_category: filterCategory
+                   });
+                 }
+               }}
+               properties={allProperties}
+               placeholder="Search by location, bedroom count, type (e.g. Ipetumodu, 4 bedroom, Fasina)"
+             />
+           </div>
         </div>
       </div>
 

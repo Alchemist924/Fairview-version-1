@@ -6,16 +6,21 @@ interface WhatsAppButtonProps {
   label?: string;
   variant?: "default" | "outline" | "secondary" | "accent";
   className?: string;
+  onClick?: () => void;
 }
 
 export function WhatsAppButton({ 
   message, 
   label = "Contact on WhatsApp", 
   variant = "default",
-  className = "" 
+  className = "",
+  onClick
 }: WhatsAppButtonProps) {
   
   const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/2349164069005?text=${encodedMessage}`;
     window.open(whatsappUrl, "_blank");

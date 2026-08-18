@@ -7,6 +7,7 @@ import { MapPin, Maximize, ArrowLeft, Tag, Home, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CommentSection } from "@/components/CommentSection";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 const PLACEHOLDER =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='16' font-family='sans-serif'%3ENo Image%3C/text%3E%3C/svg%3E";
@@ -47,6 +48,19 @@ export default function PropertyDetail() {
       .then((p) => setProperty(p ?? null))
       .catch(() => setProperty(null));
   }, [slug]);
+
+  useEffect(() => {
+    if (property) {
+      trackMetaEvent("ViewContent", {
+        content_ids: [property.slug],
+        content_name: property.title,
+        content_category: property.category,
+        location: property.location,
+        listing_type: property.listingType,
+        price: property.price
+      });
+    }
+  }, [property]);
 
   if (property === undefined) {
     return (
@@ -211,11 +225,31 @@ export default function PropertyDetail() {
                 label="Virtual Inspection"
                 variant="outline"
                 message={`Hi,\nI would like to book an inspection\nProperty: ${property.title}\nLocation: ${property.location}\nBooking Type: Virtual Inspection`}
+                onClick={() => {
+                  trackMetaEvent("Schedule", {
+                    content_ids: [property.id],
+                    content_category: property.category,
+                    content_name: property.title,
+                    inspection_type: "virtual",
+                    location: property.location,
+                    price: property.price
+                  });
+                }}
               />
               <WhatsAppButton
                 label="Physical Inspection"
                 variant="accent"
                 message={`Hi,\nI would like to book an inspection\nProperty: ${property.title}\nLocation: ${property.location}\nBooking Type: Physical Inspection`}
+                onClick={() => {
+                  trackMetaEvent("Schedule", {
+                    content_ids: [property.id],
+                    content_category: property.category,
+                    content_name: property.title,
+                    inspection_type: "physical",
+                    location: property.location,
+                    price: property.price
+                  });
+                }}
               />
             </div>
 

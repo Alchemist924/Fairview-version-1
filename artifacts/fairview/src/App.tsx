@@ -17,6 +17,7 @@ import NotFound from "./pages/not-found";
 import AdminPanel from "./pages/admin/AdminPanel";
 import PropertyForm from "./pages/admin/PropertyForm";
 import SitemapXml from "./pages/SitemapXml";
+import { resetPageTracking } from "@/lib/meta-pixel";
 
 declare global {
   interface Window {
@@ -31,6 +32,14 @@ function AnalyticsRouteTracker() {
   const isInitialRender = useRef(true);
 
   useEffect(() => {
+    // Reset page view content tracking on every route transition
+    resetPageTracking();
+
+    // Reset scroll position to top on every route navigation
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
+
     if (isInitialRender.current) {
       isInitialRender.current = false;
       return;

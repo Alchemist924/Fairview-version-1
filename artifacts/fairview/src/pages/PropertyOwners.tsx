@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, ArrowLeft, ArrowRight } from "lucide-react";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 const TOTAL_STEPS = 6;
 
@@ -115,6 +116,14 @@ function ListPropertyFlow({ onClose }: { onClose: () => void }) {
   };
 
   const handleWhatsApp = () => {
+    trackMetaEvent("Lead", {
+      content_name: "Property Owner Form Submission",
+      goal: goal,
+      property_type: propertyType,
+      location: location,
+      price: price,
+      documents_provided: documents.length > 0 ? "yes" : "no"
+    });
     const text =
       `Hello, I want to list a property\n` +
       `My goal: ${goal}\n` +

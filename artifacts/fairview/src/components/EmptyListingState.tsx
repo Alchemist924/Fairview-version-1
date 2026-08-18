@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Building2, BellRing, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 const WHATSAPP_NUMBER = "2349164069005";
 
@@ -49,7 +50,16 @@ export function EmptyListingState({ categoryTitle }: EmptyListingStateProps) {
           </Button>
         </Link>
 
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => {
+            trackMetaEvent("Contact", {
+              content_name: `Notify Me - ${categoryTitle}`
+            });
+          }}
+        >
           <Button
             variant="outline"
             className="rounded-xl h-12 px-6 gap-2 border-gray-300 text-gray-600 hover:bg-gray-50"
