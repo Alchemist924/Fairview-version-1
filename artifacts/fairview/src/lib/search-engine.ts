@@ -345,3 +345,107 @@ export function getSearchSuggestions(
 
   return suggestions.slice(0, 6);
 }
+
+export interface SearchRouteResolution {
+  path: string;
+  category?: string;
+  isPropertyDetail?: boolean;
+}
+
+/**
+ * Determines the most appropriate destination route for a search query.
+ * Distinguishes between specific property matches, category-specific queries
+ * (Lands for Sale, Shops for Lease, Apartments for Rent, Properties for Sale),
+ * and generic location/feature keyword searches.
+ */
+export function resolveSearchRoute(
+  query: string,
+  properties: Property[] = []
+): SearchRouteResolution {
+  const trimmed = query.trim();
+  if (!trimmed) {
+    return { path: "/properties-for-sale" };
+  }
+
+  const norm = normalizeText(trimmed);
+
+  // 1. Direct property title match
+  if (properties.length > 0) {
+    const exactProp = properties.find((p) => normalizeText(p.title) === norm);
+    if (exactProp) {
+      return {
+        path: `/property/${exactProp.slug}`,
+        category: exactProp.category,
+        isPropertyDetail: true,
+      };
+    }
+  }
+
+  const encodedQuery = encodeURIComponent(trimmed);
+
+  // 2. Category intent matching
+  // Lands for Sale
+  const landRegex = /\b(lands?|plots?|acres?|hectares?|farmlands?)\b/i;
+  if (landRegex.test(norm)) {
+    return {
+      path: `/lands-for-sale?search=${encodedQuery}`,
+      category: "land",
+    };
+  }
+
+  // Shops for Lease / Commercial
+  const shopRegex = /\b(shops?|stores?|commercial|lease|for lease|offices?|warehouses?|plazas?|stalls?)\b/i;
+  if (shopRegex.test(norm)) {
+    return {
+      path: `/shops-for-lease?search=${encodedQuery}`,
+      category: "shop",
+    };
+  }
+
+  // Apartments for Rent
+  const apartmentRegex = /\b(apartm(e|n)?ts?|flats?|rent(al|als)?|for rent|to let|self[\s-]?con(tain(ed)?)?|studio|mini[\s-]?flat|room\s+(and|&)\s+parlo(u)?r|hostels?)\b/i;
+  if (apartmentRegex.test(norm)) {
+    return {
+      path: `/apartments-for-rent?search=${encodedQuery}`,
+      category: "apartment",
+    };
+  }
+
+  // Properties / Houses for Sale
+  const propertySaleRegex = /\b(hous(e|es)|duplex(es)?|bungal(ow|w|o)s?|mansions?|buildings?|terraces?|propert(y|ies)|for sale|sale|buy)\b/i;
+  if (propertySaleRegex.test(norm)) {
+    return {
+      path: `/properties-for-sale?search=${encodedQuery}`,
+      category: "property",
+    };
+  }
+
+  // 3. Generic Location / Feature Search
+  // If properties are loaded, check if all matching properties belong to a single category
+  if (properties.length > 0) {
+    const searchResult = searchProperties(properties, trimmed);
+    const matches = searchResult.exactMatches.length > 0 ? searchResult.exactMatches : searchResult.closeMatches;
+    if (matches.length > 0) {
+      const categories = Array.from(new Set(matches.map((p) => p.category)));
+      if (categories.length === 1) {
+        const cat = categories[0];
+        const categoryRouteMap: Record<string, string> = {
+          land: "/lands-for-sale",
+          shop: "/shops-for-lease",
+          apartment: "/apartments-for-rent",
+          property: "/properties-for-sale",
+        };
+        const baseRoute = categoryRouteMap[cat] || "/properties-for-sale";
+        return {
+          path: `${baseRoute}?search=${encodedQuery}`,
+          category: cat,
+        };
+      }
+    }
+  }
+
+  // Default fallback preserving user query
+  return {
+    path: `/properties-for-sale?search=${encodedQuery}`,
+  };
+}

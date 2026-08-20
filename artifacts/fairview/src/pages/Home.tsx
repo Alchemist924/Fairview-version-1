@@ -10,7 +10,7 @@ import { SearchAutocompleteInput } from "@/components/SearchAutocompleteInput";
 import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
 import type { Property } from "@/lib/mock-data";
 import { trackMetaEvent } from "@/lib/meta-pixel";
-import type { AutocompleteSuggestion } from "@/lib/search-engine";
+import { type AutocompleteSuggestion, resolveSearchRoute } from "@/lib/search-engine";
 
 const WHATSAPP_TESTIMONIALS = [
   { src: "images/whatsapp-review-1.jpg", alt: "WhatsApp feedback from a Fairview user" },
@@ -39,8 +39,15 @@ export default function Home() {
   const handleHeroSearch = (query: string) => {
     const trimmed = query.trim();
     if (!trimmed) return;
-    trackMetaEvent("Search", { search_string: trimmed });
-    setLocation(`/properties-for-sale?search=${encodeURIComponent(trimmed)}`);
+
+    const resolution = resolveSearchRoute(trimmed, properties);
+
+    trackMetaEvent("Search", {
+      search_string: trimmed,
+      content_category: resolution.category,
+    });
+
+    setLocation(resolution.path);
   };
 
   /**
