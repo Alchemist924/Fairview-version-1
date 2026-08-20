@@ -8,6 +8,10 @@ interface SearchAutocompleteInputProps {
   value: string;
   onChange: (val: string) => void;
   onSearch?: (query: string) => void;
+  /** Called with the full suggestion object when a dropdown item is selected.
+   *  When provided, the parent is responsible for navigation.
+   *  Falls back to onSearch(text) when not provided (backwards-compatible). */
+  onSelectSuggestion?: (suggestion: AutocompleteSuggestion) => void;
   properties: Property[];
   placeholder?: string;
   className?: string;
@@ -17,6 +21,7 @@ export function SearchAutocompleteInput({
   value,
   onChange,
   onSearch,
+  onSelectSuggestion,
   properties,
   placeholder = "Search location, bedroom count, property type... (e.g. Ipetumodu, 4 bedroom, Fasina)",
   className = "",
@@ -40,7 +45,11 @@ export function SearchAutocompleteInput({
   const handleSelectSuggestion = (s: AutocompleteSuggestion) => {
     onChange(s.text);
     setIsOpen(false);
-    if (onSearch) {
+    if (onSelectSuggestion) {
+      // Parent handles routing with full suggestion context (slug / route)
+      onSelectSuggestion(s);
+    } else if (onSearch) {
+      // Backwards-compatible fallback for consumers that don't pass onSelectSuggestion
       onSearch(s.text);
     }
   };

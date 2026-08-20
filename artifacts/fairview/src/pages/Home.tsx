@@ -10,6 +10,7 @@ import { SearchAutocompleteInput } from "@/components/SearchAutocompleteInput";
 import { fetchPropertiesFromSupabase } from "@/lib/supabase-properties";
 import type { Property } from "@/lib/mock-data";
 import { trackMetaEvent } from "@/lib/meta-pixel";
+import type { AutocompleteSuggestion } from "@/lib/search-engine";
 
 const WHATSAPP_TESTIMONIALS = [
   { src: "images/whatsapp-review-1.jpg", alt: "WhatsApp feedback from a Fairview user" },
@@ -37,11 +38,31 @@ export default function Home() {
 
   const handleHeroSearch = (query: string) => {
     const trimmed = query.trim();
-    if (trimmed) {
-      trackMetaEvent("Search", {
-        search_string: trimmed
-      });
-      setLocation(`/properties-for-sale?search=${encodeURIComponent(trimmed)}`);
+    if (!trimmed) return;
+    trackMetaEvent("Search", { search_string: trimmed });
+    setLocation(`/properties-for-sale?search=${encodeURIComponent(trimmed)}`);
+  };
+
+  /**
+   * Called when the user explicitly selects a suggestion from the dropdown.
+   * Routes based on the suggestion's type and its pre-computed slug / route.
+   */
+  const handleSelectSuggestion = (suggestion: AutocompleteSuggestion) => {
+    // Always fire the existing Search event — preserves Meta tracking
+    trackMetaEvent("Search", {
+      search_string: suggestion.text,
+      content_category: suggestion.type === "category" ? suggestion.text : undefined,
+    });
+
+    if (suggestion.type === "property" && suggestion.slug) {
+      // Individual property → open its detail page directly
+      setLocation(`/property/${suggestion.slug}`);
+    } else if (suggestion.type === "category" && suggestion.route) {
+      // Named category → go to its canonical listing page
+      setLocation(suggestion.route);
+    } else {
+      // Location or feature keyword → fall back to keyword search
+      handleHeroSearch(suggestion.text);
     }
   };
 
@@ -79,6 +100,7 @@ export default function Home() {
                   value={heroSearch}
                   onChange={setHeroSearch}
                   onSearch={handleHeroSearch}
+                  onSelectSuggestion={handleSelectSuggestion}
                   properties={properties}
                   placeholder="Search location, property type, bedrooms... (e.g. Ipetumodu, 4 bedroom, Fasina)"
                   className="text-gray-900 shadow-2xl"

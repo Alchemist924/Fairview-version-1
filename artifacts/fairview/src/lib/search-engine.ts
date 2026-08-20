@@ -268,6 +268,10 @@ export interface AutocompleteSuggestion {
   text: string;
   type: "location" | "category" | "feature" | "property";
   subtext?: string;
+  /** For property suggestions: the property slug used to build /property/<slug> */
+  slug?: string;
+  /** For category suggestions: the canonical route, e.g. /lands-for-sale */
+  route?: string;
 }
 
 /** Generate dynamic autocomplete suggestions based on properties dataset */
@@ -299,13 +303,13 @@ export function getSearchSuggestions(
   }
 
   // 2. Check property categories & listing types
-  const categories = [
-    { name: "Lands for Sale", query: "Land" },
-    { name: "Properties for Sale", query: "Properties for Sale" },
-    { name: "Apartments for Rent", query: "Apartment" },
-    { name: "Shops for Lease", query: "Shop for Lease" },
-    { name: "Bungalows", query: "Bungalow" },
-    { name: "Self Contain", query: "Self Contain" },
+  const categories: { name: string; query: string; route: string }[] = [
+    { name: "Lands for Sale", query: "Land", route: "/lands-for-sale" },
+    { name: "Properties for Sale", query: "Properties for Sale", route: "/properties-for-sale" },
+    { name: "Apartments for Rent", query: "Apartment", route: "/apartments-for-rent" },
+    { name: "Shops for Lease", query: "Shop for Lease", route: "/shops-for-lease" },
+    { name: "Bungalows", query: "Bungalow", route: "/properties-for-sale" },
+    { name: "Self Contain", query: "Self Contain", route: "/apartments-for-rent" },
   ];
 
   for (const cat of categories) {
@@ -317,6 +321,7 @@ export function getSearchSuggestions(
           text: cat.name,
           type: "category",
           subtext: "Category / Type",
+          route: cat.route,
         });
       }
     }
@@ -332,6 +337,7 @@ export function getSearchSuggestions(
           text: p.title,
           type: "property",
           subtext: p.location,
+          slug: p.slug,
         });
       }
     }
