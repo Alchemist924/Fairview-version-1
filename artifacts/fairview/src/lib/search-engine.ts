@@ -383,8 +383,7 @@ export function resolveSearchRoute(
 
   const encodedQuery = encodeURIComponent(trimmed);
 
-  // 2. Category intent matching
-  // Lands for Sale
+  // 2. Explicit Land Intent
   const landRegex = /\b(lands?|plots?|acres?|hectares?|farmlands?)\b/i;
   if (landRegex.test(norm)) {
     return {
@@ -393,8 +392,8 @@ export function resolveSearchRoute(
     };
   }
 
-  // Shops for Lease / Commercial
-  const shopRegex = /\b(shops?|stores?|commercial|lease|for lease|offices?|warehouses?|plazas?|stalls?)\b/i;
+  // 3. Explicit Shop / Commercial Intent
+  const shopRegex = /\b(shops?|stores?|commercial|lease|leasing|offices?|warehouses?|plazas?|stalls?)\b|\bfor\s+lease\b/i;
   if (shopRegex.test(norm)) {
     return {
       path: `/shops-for-lease?search=${encodedQuery}`,
@@ -402,8 +401,8 @@ export function resolveSearchRoute(
     };
   }
 
-  // Apartments for Rent
-  const apartmentRegex = /\b(apartm(e|n)?ts?|flats?|rent(al|als)?|for rent|to let|self[\s-]?con(tain(ed)?)?|studio|mini[\s-]?flat|room\s+(and|&)\s+parlo(u)?r|hostels?)\b/i;
+  // 4. Explicit Apartment / Rental Intent
+  const apartmentRegex = /\b(apartments?|apartmnts?|flats?|rentals?|renting|rents?|studio(s)?|mini[\s-]?flats?|hostels?)\b|\bto\s+let\b|\bfor\s+rent\b|\bself[\s-]*(?:con(?:tain(?:ed)?)?)\b|\broom\s*(?:and|&)\s*parlo[u]?r\b/i;
   if (apartmentRegex.test(norm)) {
     return {
       path: `/apartments-for-rent?search=${encodedQuery}`,
@@ -411,8 +410,8 @@ export function resolveSearchRoute(
     };
   }
 
-  // Properties / Houses for Sale
-  const propertySaleRegex = /\b(hous(e|es)|duplex(es)?|bungal(ow|w|o)s?|mansions?|buildings?|terraces?|propert(y|ies)|for sale|sale|buy)\b/i;
+  // 5. Explicit Property / House for Sale Intent
+  const propertySaleRegex = /\b(houses?|duplex(?:es)?|bungal(?:ow|w|o)s?|mansions?|buildings?|terraces?|propert(?:y|ies)|sales?|buy(?:ing)?)\b|\bfor\s+sale\b/i;
   if (propertySaleRegex.test(norm)) {
     return {
       path: `/properties-for-sale?search=${encodedQuery}`,
@@ -420,31 +419,7 @@ export function resolveSearchRoute(
     };
   }
 
-  // 3. Generic Location / Feature Search
-  // If properties are loaded, check if all matching properties belong to a single category
-  if (properties.length > 0) {
-    const searchResult = searchProperties(properties, trimmed);
-    const matches = searchResult.exactMatches.length > 0 ? searchResult.exactMatches : searchResult.closeMatches;
-    if (matches.length > 0) {
-      const categories = Array.from(new Set(matches.map((p) => p.category)));
-      if (categories.length === 1) {
-        const cat = categories[0];
-        const categoryRouteMap: Record<string, string> = {
-          land: "/lands-for-sale",
-          shop: "/shops-for-lease",
-          apartment: "/apartments-for-rent",
-          property: "/properties-for-sale",
-        };
-        const baseRoute = categoryRouteMap[cat] || "/properties-for-sale";
-        return {
-          path: `${baseRoute}?search=${encodedQuery}`,
-          category: cat,
-        };
-      }
-    }
-  }
-
-  // Default fallback preserving user query
+  // 6. Generic Location / Feature Search (preserves query parameter in standard listing search)
   return {
     path: `/properties-for-sale?search=${encodedQuery}`,
   };
