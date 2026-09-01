@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Link, useLocation } from "wouter";
-import { ArrowRight, Search, Key, Star } from "lucide-react";
+import { ArrowRight, Search, Key, Star, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -294,14 +302,45 @@ export default function Home() {
                 Property transactions don't have to be complicated.
               </p>
               
-              <div className="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-8 max-w-sm">
-                <img 
-                  src={`${import.meta.env.BASE_URL}images/cac-cert.png`} 
-                  alt="CAC Registration Certificate" 
-                  className="w-full rounded-xl object-cover"
-                />
-                <p className="text-center text-xs font-medium text-gray-500 mt-3 uppercase tracking-wider">Official CAC Certification</p>
-              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-8 max-w-sm cursor-pointer group transition-all duration-300 hover:shadow-lg hover:border-gray-200">
+                    <div className="relative h-[290px] sm:h-[320px] w-full rounded-xl overflow-hidden bg-white border border-gray-200/70 shadow-inner">
+                      <img 
+                        src={`${import.meta.env.BASE_URL}images/TRUECREST_CERTIFICATE.png`} 
+                        alt="Truecrest Limited Certificate of Incorporation - Registration No. 9814014" 
+                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02] select-none"
+                      />
+                      <div className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-sm p-1.5 rounded-lg shadow-sm border border-gray-200/80 text-gray-500 group-hover:text-primary transition-colors pointer-events-none">
+                        <Maximize2 className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3 pointer-events-none">
+                        <span className="text-xs font-semibold bg-white text-gray-800 px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 backdrop-blur-sm border border-gray-200/60">
+                          <Maximize2 className="w-3.5 h-3.5 text-primary" /> View Full Certificate
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-center text-xs font-medium text-gray-500 mt-3 uppercase tracking-wider">Official CAC Certification</p>
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] p-4 sm:p-6 overflow-y-auto bg-white rounded-2xl">
+                  <DialogHeader className="mb-2 text-left">
+                    <DialogTitle className="text-xl font-display font-bold text-primary">
+                      Certificate of Incorporation
+                    </DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                      TRUECREST LIMITED &bull; Company Registration No. 9814014
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-inner">
+                    <img 
+                      src={`${import.meta.env.BASE_URL}images/TRUECREST_CERTIFICATE.png`} 
+                      alt="Complete Truecrest Limited Certificate of Incorporation" 
+                      className="w-full h-auto object-contain"
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
 
               <Link href="/about">
                 <Button className="rounded-full px-8 bg-primary hover:bg-primary/90">
